@@ -2,7 +2,7 @@
 # Dockerfile for the geOrchestra database service
 #
 # Use with caution: this is work in progress
-#
+# Based on http://docs.docker.com/examples/postgresql_service/
 
 FROM debian:jessie
 

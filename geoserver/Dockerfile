@@ -3,6 +3,8 @@
 #
 # Use with caution: this is work in progress
 #
+# run this one with --privileged to overcome https://github.com/docker/docker/issues/6800
+# (docker run -it --cap-add SYS_PTRACE does not fix it)
 
 FROM debian:jessie
 
@@ -10,12 +12,15 @@ MAINTAINER PSC "psc@georchestra.org"
 
 ENV DEBIAN_FRONTEND noninterative
 
+# add contrib repository to fetch "core fonts for the web"
 RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib" >> /etc/apt/sources.list
 RUN echo "deb http://security.debian.org/ jessie/updates contrib" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y tomcat7 wget ttf-mscorefonts-installer
-
+    apt-get install -y tomcat7 wget ttf-mscorefonts-installer gdal-bin
+    
+# gdal-bin required for ogr extension (ogr2ogr)
+    
 RUN mkdir /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir && \
     chown tomcat7 /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
 
@@ -52,11 +57,8 @@ EXPOSE 8080
 # Add VOLUMEs to allow backup & sharing
 VOLUME  ["/opt/geoserver_data_dir", "/var/cache/geowebcache_cache_dir"]
 
-# Set the default command to run when starting the container
-#CMD ["/usr/lib/jvm/default-java/bin/java", "-Djava.util.logging.config.file=/var/lib/tomcat-georchestra/conf/logging.properties", "-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager", "-Djava.endorsed.dirs=/usr/share/tomcat7/endorsed", "-classpath", "/usr/share/tomcat7/bin/bootstrap.jar", "-Dcatalina.base=/var/lib/tomcat-georchestra", "-Dcatalina.home=/usr/share/tomcat6", "-Djava.io.tmpdir=/tmp/tomcat6-tomcat-georchestra-tmp", "org.apache.catalina.startup.Bootstrap", "start"]
-
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
 # command (the tail command); thus, the Docker container will keep running.
 #~ CMD sudo /etc/init.d/tomcat7 start && tail -f /var/log/tomcat7/catalina.out
-CMD /etc/init.d/tomcat7 start && tail -f /var/log/tomcat7/catalina.out
+CMD /etc/init.d/tomcat7 start && tail -F /var/log/tomcat7/catalina.out
