@@ -46,6 +46,3 @@ VOLUME ["/var/www/georchestra"]
 
 # Set the default command to run when starting the container
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
-
-
-

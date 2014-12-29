@@ -49,7 +49,7 @@ ENV JAVA_OPTS "-Djava.awt.headless=true \
 
 # FIXME: this WAR was built with GeoFence, and we don't want this by default:
 # FIXME: cannot use ADD because of self-signed certificate for sdi.georchestra.org
-RUN wget --no-check-certificate http://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war -O /var/lib/tomcat7/webapps/geoserver.war
+RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war -O /var/lib/tomcat7/webapps/geoserver.war
 
 # Expose the port where tomcat is listening
 EXPOSE 8080
