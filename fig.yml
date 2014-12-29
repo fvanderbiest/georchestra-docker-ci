@@ -1,0 +1,43 @@
+database:
+    image: geor_postgresql
+    expose:
+        - "5432"
+    volumes:
+        - ~/docker/volumes/georchestra/postgresql_etc:/etc/postgresql
+        - ~/docker/volumes/georchestra/postgresql_logs:/var/log/postgresql
+        - ~/docker/volumes/georchestra/postgresql_data:/var/lib/postgresql
+
+ldap:
+    image: geor_openldap
+    expose:
+        - "389"
+    volumes:
+        - ~/docker/volumes/georchestra/openldap_data:/etc/ldap/slapd.d
+
+apache:
+    image: geor_apache
+    ports:
+        - "80:80"
+    volumes:
+        - ~/docker/volumes/georchestra/apache_site:/var/www/georchestra
+    #~ FIXME: we need to modify some vars in the apache config so that they look for the proxy at the correct IP
+    links:
+        - proxycas:proxy
+
+proxycas:
+    image: geor_proxycas
+    privileged: true
+    expose:
+        - "8180"
+    #~ FIXME: we need to modify some files in the webapps so that they look for the ldap at the correct IP
+    links:
+        - ldap:openldap
+
+mapfishapp:
+    image: geor_mapfishapp
+    privileged: true
+    expose:
+        - "8280"
+    #~ FIXME: we need to modify some files in the webapp so that it looks for the database at the correct IP
+    links:
+        - database:postgresql
