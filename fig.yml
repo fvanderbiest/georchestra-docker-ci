@@ -18,6 +18,7 @@ apache:
     build: ./apache
     ports:
         - "80:80"
+        - "443:443"
     volumes:
         - ~/docker/volumes/georchestra/apache_site:/var/www/georchestra
     #~ FIXME: we need to modify some vars in the apache config so that they look for the proxy at the correct IP
