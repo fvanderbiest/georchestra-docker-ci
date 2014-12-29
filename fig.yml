@@ -1,5 +1,5 @@
 database:
-    image: geor_postgresql
+    build: ./postgresql
     expose:
         - "5432"
     volumes:
@@ -8,14 +8,14 @@ database:
         - ~/docker/volumes/georchestra/postgresql_data:/var/lib/postgresql
 
 ldap:
-    image: geor_openldap
+    build: ./openldap
     expose:
         - "389"
     volumes:
         - ~/docker/volumes/georchestra/openldap_data:/etc/ldap/slapd.d
 
 apache:
-    image: geor_apache
+    build: ./apache
     ports:
         - "80:80"
     volumes:
@@ -25,7 +25,7 @@ apache:
         - proxycas:proxy
 
 proxycas:
-    image: geor_proxycas
+    build: ./proxycas
     privileged: true
     expose:
         - "8180"
@@ -34,7 +34,7 @@ proxycas:
         - ldap:openldap
 
 mapfishapp:
-    image: geor_mapfishapp
+    build: ./mapfishapp
     privileged: true
     expose:
         - "8280"
