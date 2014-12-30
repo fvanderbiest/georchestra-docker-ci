@@ -29,3 +29,7 @@ VOLUME ["/tmp"] # server logs
 # The last line (the CMD command) is used to make a fake always-running
 # command (the tail command); thus, the Docker container will keep running.
 CMD /etc/init.d/tomcat6 start && tail -F /var/log/tomcat6/catalina.out
+
+# replace the webapp's own proxy-servlet.xml & properties file in order to link with the database and other containers
+COPY proxy-servlet.xml /var/lib/tomcat6/webapps/ROOT/WEB-INF/
+COPY security-proxy.properties /var/lib/tomcat6/webapps/ROOT/WEB-INF/

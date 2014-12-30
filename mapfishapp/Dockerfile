@@ -28,4 +28,5 @@ VOLUME ["/tmp"] # server logs
 # command (the tail command); thus, the Docker container will keep running.
 CMD /etc/init.d/tomcat7 start && tail -F /var/log/tomcat7/catalina.out
 
+# replace the webapp's own ws-servlet.xml in order to link with the database
 COPY ws-servlet.xml /var/lib/tomcat7/webapps/mapfishapp/WEB-INF/

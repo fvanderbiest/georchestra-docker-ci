@@ -31,19 +31,19 @@ apache:
 proxycas:
     build: ./proxycas
     privileged: true
-    expose:
-        - "8180"
-    #~ FIXME: we need to modify some files in the webapps so that they look for the ldap at the correct IP
+    ports:
+        - "8180:8180"
     links:
-        - ldap:openldap_host
+        - ldap:ldap_host
+        - mapfishapp:mapfishapp_host
     volumes:
         - ~/docker/volumes/georchestra/proxycas_logs:/tmp
 
 mapfishapp:
     build: ./mapfishapp
     privileged: true
-    expose:
-        - "8280"
+    ports:
+        - "8080:8280"
     links:
         - database:postgresql_host
     volumes:
