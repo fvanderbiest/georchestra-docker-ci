@@ -40,7 +40,7 @@
 
     <!-- Documents controller -->
     <bean class="org.georchestra.mapfishapp.ws.DocController">
-        <property name="docTempDir" value="${docTempDir}"/>
+        <property name="docTempDir" value="/tmp"/>
         <property name="connectionPool" ref="pgpool"/>
         <property name="credentials">
             <map>
