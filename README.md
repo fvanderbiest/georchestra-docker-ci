@@ -18,6 +18,15 @@ Install Fig:
 curl -L https://github.com/docker/fig/releases/download/1.0.1/fig-`uname -s`-`uname -m` > /usr/local/bin/fig; chmod +x /usr/local/bin/fig
 ```
 
+Create directories on the host for logs (volumes)
+
+```
+mkdir -p ~/docker/volumes/georchestra/postgresql_logs
+mkdir -p ~/docker/volumes/georchestra/apache_logs
+mkdir -p ~/docker/volumes/georchestra/proxycas_logs
+mkdir -p ~/docker/volumes/georchestra/mapfishapp_logs
+```
+
 ## build images
 
 Run the stack with:
