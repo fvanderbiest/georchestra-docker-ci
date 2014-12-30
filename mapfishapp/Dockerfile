@@ -27,3 +27,5 @@ VOLUME ["/tmp"] # server logs
 # The last line (the CMD command) is used to make a fake always-running
 # command (the tail command); thus, the Docker container will keep running.
 CMD /etc/init.d/tomcat7 start && tail -F /var/log/tomcat7/catalina.out
+
+COPY ws-servlet.xml /var/lib/tomcat7/webapps/mapfishapp/WEB-INF/

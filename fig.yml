@@ -44,7 +44,6 @@ mapfishapp:
     privileged: true
     expose:
         - "8280"
-    #~ FIXME: we need to modify some files in the webapp so that it looks for the database at the correct IP
     links:
         - database:postgresql_host
     volumes:
