@@ -55,7 +55,7 @@ RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-t
 EXPOSE 8080
 
 # Add VOLUMEs to allow backup & sharing
-VOLUME  ["/opt/geoserver_data_dir", "/var/cache/geowebcache_cache_dir"]
+VOLUME  ["/opt/geoserver_data_dir", "/var/cache/geowebcache_cache_dir", "/tmp"]
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running

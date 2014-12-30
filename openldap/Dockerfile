@@ -24,7 +24,7 @@ RUN /etc/init.d/slapd start && \
 EXPOSE 389
 
 # Add VOLUMEs to allow backup of databases
-VOLUME  ["/etc/ldap/slapd.d"]
+#~ VOLUME  ["/etc/ldap/slapd.d"]
 
 # Set the default command to run when starting the container
-CMD ["/usr/sbin/slapd", "-h", "ldap:///", "ldapi:///", "-g", "openldap", "-u", "openldap", "-F", "/etc/ldap/slapd.d"]
+CMD /etc/init.d/slapd start && tail -F /var/log/syslog

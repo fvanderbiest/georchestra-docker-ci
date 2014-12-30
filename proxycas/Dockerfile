@@ -23,6 +23,8 @@ RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-t
 # Expose the port where tomcat is listening
 EXPOSE 8080
 
+VOLUME ["/tmp"] # server logs
+
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
 # command (the tail command); thus, the Docker container will keep running.

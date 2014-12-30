@@ -3,16 +3,20 @@ database:
     expose:
         - "5432"
     volumes:
-        - ~/docker/volumes/georchestra/postgresql_etc:/etc/postgresql
         - ~/docker/volumes/georchestra/postgresql_logs:/var/log/postgresql
-        - ~/docker/volumes/georchestra/postgresql_data:/var/lib/postgresql
+    # we'll see data volumes later on
+    # https://docs.docker.com/userguide/dockervolumes/
+    #    - ~/docker/volumes/georchestra/postgresql_etc:/etc/postgresql
+    #    - ~/docker/volumes/georchestra/postgresql_data:/var/lib/postgresql
 
 ldap:
     build: ./openldap
     expose:
         - "389"
-    volumes:
-        - ~/docker/volumes/georchestra/openldap_data:/etc/ldap/slapd.d
+    # we'll see data volumes later on
+    # https://docs.docker.com/userguide/dockervolumes/
+    #volumes:
+    #    - ~/docker/volumes/georchestra/openldap_data:/etc/ldap/slapd.d
 
 apache:
     build: ./apache
@@ -20,10 +24,9 @@ apache:
         - "80:80"
         - "443:443"
     volumes:
-        - ~/docker/volumes/georchestra/apache_site:/var/www/georchestra
-    #~ FIXME: we need to modify some vars in the apache config so that they look for the proxy at the correct IP
+        - ~/docker/volumes/georchestra/apache_logs:/tmp
     links:
-        - proxycas:proxy
+        - proxycas:proxy_host
 
 proxycas:
     build: ./proxycas
@@ -32,7 +35,9 @@ proxycas:
         - "8180"
     #~ FIXME: we need to modify some files in the webapps so that they look for the ldap at the correct IP
     links:
-        - ldap:openldap
+        - ldap:openldap_host
+    volumes:
+        - ~/docker/volumes/georchestra/proxycas_logs:/tmp
 
 mapfishapp:
     build: ./mapfishapp
@@ -41,4 +46,6 @@ mapfishapp:
         - "8280"
     #~ FIXME: we need to modify some files in the webapp so that it looks for the database at the correct IP
     links:
-        - database:postgresql
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
