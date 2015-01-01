@@ -20,8 +20,11 @@ RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-t
 RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war -O /var/lib/tomcat6/webapps/cas.war
 RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war -O /var/lib/tomcat6/webapps/header-private.war
 
+
+RUN sed -i 's/8080/8180/' /var/lib/tomcat6/conf/server.xml
+
 # Expose the port where tomcat is listening
-EXPOSE 8080
+EXPOSE 8180
 
 VOLUME ["/tmp"] # server logs
 

@@ -7,7 +7,7 @@
 
     <bean id="proxy"  init-method="init"
           class="org.georchestra.security.Proxy">
-<!--          <property name="defaultTarget" value="http://localhost:8180/sec/"/>-->
+<!--          <property name="defaultTarget" value="http://localhost:8280/sec/"/>-->
           <property name="headerManagement" ref="headerManagementBean"/>
           <property name="defaultCharset" value="UTF-8"/>
 
@@ -25,7 +25,17 @@
 
           <property name="targets">
                <map>
-<entry key="analytics"     value="http://localhost:8180/analytics/" /><entry key="catalogapp"    value="http://localhost:8180/catalogapp/" /><entry key="downloadform"  value="http://localhost:8180/downloadform/" /><entry key="extractorapp"  value="http://localhost:8180/extractorapp/" /><entry key="geonetwork"    value="http://localhost:8180/geonetwork/" /><entry key="geoserver"     value="http://localhost:8180/geoserver/" /><entry key="geowebcache"   value="http://localhost:8180/geowebcache/" /><entry key="geofence"      value="http://localhost:8180/geofence/" /><entry key="header"        value="http://localhost:8180/header-private/" /><entry key="ldapadmin"     value="http://localhost:8180/ldapadmin/" /><entry key="mapfishapp"    value="http://mapfishapp_host:8280/mapfishapp/" />
+                    <entry key="analytics"     value="http://localhost:8280/analytics/" />
+                    <entry key="catalogapp"    value="http://localhost:8280/catalogapp/" />
+                    <entry key="downloadform"  value="http://localhost:8280/downloadform/" />
+                    <entry key="extractorapp"  value="http://localhost:8280/extractorapp/" />
+                    <entry key="geonetwork"    value="http://localhost:8280/geonetwork/" />
+                    <entry key="geoserver"     value="http://localhost:8280/geoserver/" />
+                    <entry key="geowebcache"   value="http://localhost:8280/geowebcache/" />
+                    <entry key="geofence"      value="http://localhost:8280/geofence/" />
+                    <entry key="header"        value="http://proxycas:8180/header-private/" />
+                    <entry key="ldapadmin"     value="http://localhost:8280/ldapadmin/" />
+                    <entry key="mapfishapp"    value="http://mapfishapp_host:8280/mapfishapp/" />
                </map>
           </property>
           <property name="requireCharsetContentTypes">

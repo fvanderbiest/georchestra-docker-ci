@@ -31,8 +31,8 @@ apache:
 proxycas:
     build: ./proxycas
     privileged: true
-    ports:
-        - "8180:8180"
+    expose:
+        - "8180"
     links:
         - ldap:ldap_host
         - mapfishapp:mapfishapp_host
@@ -42,8 +42,8 @@ proxycas:
 mapfishapp:
     build: ./mapfishapp
     privileged: true
-    ports:
-        - "8080:8280"
+    expose:
+        - "8280"
     links:
         - database:postgresql_host
     volumes:

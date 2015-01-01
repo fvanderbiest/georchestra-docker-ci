@@ -18,10 +18,14 @@ RUN apt-get update && \
 # FIXME: cannot use ADD because of self-signed certificate for sdi.georchestra.org
 RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/mapfishapp/target/mapfishapp-template.war -O /var/lib/tomcat7/webapps/mapfishapp.war
 
+
+
 # Expose the port where tomcat is listening
-EXPOSE 8080
+EXPOSE 8280
 
 VOLUME ["/tmp"] # server logs
+
+RUN sed -i 's/8080/8280/' /var/lib/tomcat7/conf/server.xml
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
