@@ -47,15 +47,14 @@ ENV JAVA_OPTS "-Djava.awt.headless=true \
             #~ -Djavax.net.ssl.trustStore=/etc/tomcat6/keystore \
             #~ -Djavax.net.ssl.trustStorePassword=STOREPASSWORD
 
-# FIXME: this WAR was built with GeoFence, and we don't want this by default:
-# FIXME: cannot use ADD because of self-signed certificate for sdi.georchestra.org
-RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war -O /var/lib/tomcat7/webapps/geoserver.war
+ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
 
 # Expose the port where tomcat is listening
-EXPOSE 8080
+RUN sed -i 's/8080/8380/' /var/lib/tomcat7/conf/server.xml
+EXPOSE 8380
 
 # Add VOLUMEs to allow backup & sharing
-VOLUME  ["/opt/geoserver_data_dir", "/var/cache/geowebcache_cache_dir", "/tmp"]
+#VOLUME  ["/opt/geoserver_data_dir", "/var/cache/geowebcache_cache_dir", "/tmp"]
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running

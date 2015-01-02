@@ -36,6 +36,7 @@ proxycas:
     links:
         - ldap:ldap_host
         - mapfishapp:mapfishapp_host
+        - geoserver:geoserver_host
     volumes:
         - ~/docker/volumes/georchestra/proxycas_logs:/tmp
 
@@ -48,3 +49,11 @@ mapfishapp:
         - database:postgresql_host
     volumes:
         - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
+
+geoserver:
+    build: ./geoserver
+    privileged: true
+    expose:
+        - "8380"
+    volumes:
+        - ~/docker/volumes/georchestra/geoserver_logs:/tmp

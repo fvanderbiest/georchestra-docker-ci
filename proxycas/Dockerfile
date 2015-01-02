@@ -15,11 +15,9 @@ ENV DEBIAN_FRONTEND noninterative
 RUN apt-get update && \
     apt-get install -y tomcat6 wget
 
-# FIXME: cannot use ADD because of self-signed certificate for sdi.georchestra.org
-RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/security-proxy/target/ROOT-template.war -O /var/lib/tomcat6/webapps/ROOT.war
-RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war -O /var/lib/tomcat6/webapps/cas.war
-RUN wget --no-check-certificate https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war -O /var/lib/tomcat6/webapps/header-private.war
-
+ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/security-proxy/target/ROOT-template.war /var/lib/tomcat6/webapps/ROOT.war
+ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war /var/lib/tomcat6/webapps/cas.war
+ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war /var/lib/tomcat6/webapps/header-private.war
 
 RUN sed -i 's/8080/8180/' /var/lib/tomcat6/conf/server.xml
 

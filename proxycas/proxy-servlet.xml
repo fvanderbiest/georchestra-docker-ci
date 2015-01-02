@@ -30,7 +30,7 @@
                     <entry key="downloadform"  value="http://localhost:8280/downloadform/" />
                     <entry key="extractorapp"  value="http://localhost:8280/extractorapp/" />
                     <entry key="geonetwork"    value="http://localhost:8280/geonetwork/" />
-                    <entry key="geoserver"     value="http://localhost:8280/geoserver/" />
+                    <entry key="geoserver"     value="http://geoserver_host:8380/geoserver/" />
                     <entry key="geowebcache"   value="http://localhost:8280/geowebcache/" />
                     <entry key="geofence"      value="http://localhost:8280/geofence/" />
                     <entry key="header"        value="http://proxycas:8180/header-private/" />
