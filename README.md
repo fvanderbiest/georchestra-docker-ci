@@ -26,6 +26,7 @@ mkdir -p ~/docker/volumes/georchestra/apache_logs
 mkdir -p ~/docker/volumes/georchestra/proxycas_logs
 mkdir -p ~/docker/volumes/georchestra/mapfishapp_logs
 mkdir -p ~/docker/volumes/georchestra/geoserver_logs
+chmod -R a+r ~/docker/volumes/georchestra/*
 ```
 
 ## build images

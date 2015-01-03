@@ -1,5 +1,5 @@
 #
-# Dockerfile for the geOrchestra viewer service
+# Dockerfile for the geOrchestra catalogapp service
 #
 # Use with caution: this is work in progress
 #
@@ -16,24 +16,19 @@ RUN apt-get update && \
     apt-get install -y tomcat7
 
 RUN rm -rf /var/lib/tomcat7/webapps/*
-ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/mapfishapp/target/mapfishapp-template.war /var/lib/tomcat7/webapps/mapfishapp.war
+ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/catalogapp/target/catalogapp-template.war /var/lib/tomcat7/webapps/catalogapp.war
+RUN chmod a+r /var/lib/tomcat7/webapps/*.war
 
-RUN mkdir -p /var/lib/tomcat7/webapps/mapfishapp && \
-    unzip -e /var/lib/tomcat7/webapps/mapfishapp.war -d /var/lib/tomcat7/webapps/mapfishapp && \
-    chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/mapfishapp
-
-# replace the webapp's own ws-servlet.xml in order to link with the database
-COPY ws-servlet.xml /var/lib/tomcat7/webapps/mapfishapp/WEB-INF/
 
 COPY keystore /etc/tomcat7/
 ENV JAVA_OPTS "-Djavax.net.ssl.trustStore=/etc/tomcat7/keystore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"  
 
 # Expose the port where tomcat is listening
-EXPOSE 8280
+EXPOSE 8282
 
-VOLUME ["/tmp"] # server logs
+#VOLUME ["/tmp"] # server logs
 
-RUN sed -i 's/8080/8280/' /var/lib/tomcat7/conf/server.xml
+RUN sed -i 's/8080/8282/' /var/lib/tomcat7/conf/server.xml
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running

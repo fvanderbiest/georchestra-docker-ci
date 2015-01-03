@@ -13,11 +13,25 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN apt-get update && \
-    apt-get install -y tomcat6 wget
+    apt-get install -y tomcat6 unzip
 
+RUN rm -rf /var/lib/tomcat6/webapps/*
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/security-proxy/target/ROOT-template.war /var/lib/tomcat6/webapps/ROOT.war
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war /var/lib/tomcat6/webapps/cas.war
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war /var/lib/tomcat6/webapps/header-private.war
+RUN chmod a+r /var/lib/tomcat6/webapps/*.war
+
+RUN mkdir -p /var/lib/tomcat6/webapps/ROOT && \
+    unzip -e /var/lib/tomcat6/webapps/ROOT.war -d /var/lib/tomcat6/webapps/ROOT && \
+    chown -R tomcat6:tomcat6 /var/lib/tomcat6/webapps/ROOT
+
+# replace the webapp's own proxy-servlet.xml & properties file in order to link with the database and other containers
+COPY proxy-servlet.xml /var/lib/tomcat6/webapps/ROOT/WEB-INF/
+COPY security-proxy.properties /var/lib/tomcat6/webapps/ROOT/WEB-INF/
+COPY log4j.properties /var/lib/tomcat6/webapps/ROOT/WEB-INF/classes/
+
+COPY keystore /etc/tomcat6/
+ENV JAVA_OPTS "-Djavax.net.ssl.trustStore=/etc/tomcat6/keystore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"              
 
 RUN sed -i 's/8080/8180/' /var/lib/tomcat6/conf/server.xml
 
@@ -31,6 +45,3 @@ VOLUME ["/tmp"] # server logs
 # command (the tail command); thus, the Docker container will keep running.
 CMD /etc/init.d/tomcat6 start && tail -F /var/log/tomcat6/catalina.out
 
-# replace the webapp's own proxy-servlet.xml & properties file in order to link with the database and other containers
-COPY proxy-servlet.xml /var/lib/tomcat6/webapps/ROOT/WEB-INF/
-COPY security-proxy.properties /var/lib/tomcat6/webapps/ROOT/WEB-INF/

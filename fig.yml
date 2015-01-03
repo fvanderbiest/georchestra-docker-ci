@@ -31,24 +31,27 @@ apache:
 proxycas:
     build: ./proxycas
     privileged: true
-    expose:
-        - "8180"
+    ports:
+        - "8180:8180"
     links:
         - ldap:ldap_host
-        - mapfishapp:mapfishapp_host
-        - geoserver:geoserver_host
+        #~ - mapfishapp:mapfishapp_host
+        #~ - ldapadmin:ldapadmin_host
+        - catalogapp:catalogapp_host
+        #~ - geoserver:geoserver_host
     volumes:
         - ~/docker/volumes/georchestra/proxycas_logs:/tmp
 
-mapfishapp:
-    build: ./mapfishapp
-    privileged: true
-    expose:
-        - "8280"
-    links:
-        - database:postgresql_host
-    volumes:
-        - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
+# Broken build for now, see https://github.com/georchestra/georchestra/issues/857
+#~ mapfishapp:
+    #~ build: ./mapfishapp
+    #~ privileged: true
+    #~ ports:
+        #~ - "8280"
+    #~ links:
+        #~ - database:postgresql_host
+    #~ volumes:
+        #~ - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
 
 geoserver:
     build: ./geoserver
@@ -57,3 +60,20 @@ geoserver:
         - "8380"
     volumes:
         - ~/docker/volumes/georchestra/geoserver_logs:/tmp
+        
+ldapadmin:
+    build: ./ldapadmin
+    privileged: true
+    expose:
+        - "8281"
+    links:
+        - ldap:ldap_host
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/ldapadmin_logs:/tmp
+
+catalogapp:
+    build: ./catalogapp
+    privileged: true
+    ports:
+        - "8282:8282"

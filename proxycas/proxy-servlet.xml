@@ -25,17 +25,11 @@
 
           <property name="targets">
                <map>
-                    <entry key="analytics"     value="http://localhost:8280/analytics/" />
-                    <entry key="catalogapp"    value="http://localhost:8280/catalogapp/" />
-                    <entry key="downloadform"  value="http://localhost:8280/downloadform/" />
-                    <entry key="extractorapp"  value="http://localhost:8280/extractorapp/" />
-                    <entry key="geonetwork"    value="http://localhost:8280/geonetwork/" />
                     <entry key="geoserver"     value="http://geoserver_host:8380/geoserver/" />
-                    <entry key="geowebcache"   value="http://localhost:8280/geowebcache/" />
-                    <entry key="geofence"      value="http://localhost:8280/geofence/" />
-                    <entry key="header"        value="http://proxycas:8180/header-private/" />
-                    <entry key="ldapadmin"     value="http://localhost:8280/ldapadmin/" />
+                    <entry key="header"        value="http://localhost:8180/header-private/" />
+                    <entry key="ldapadmin"     value="http://ldapadmin_host:8281/ldapadmin/" />
                     <entry key="mapfishapp"    value="http://mapfishapp_host:8280/mapfishapp/" />
+                    <entry key="catalogapp"    value="http://catalogapp_host:8282/catalogapp/" />
                </map>
           </property>
           <property name="requireCharsetContentTypes">

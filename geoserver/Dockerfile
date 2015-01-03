@@ -17,7 +17,7 @@ RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib" >> /etc/apt/source
 RUN echo "deb http://security.debian.org/ jessie/updates contrib" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y tomcat7 wget ttf-mscorefonts-installer gdal-bin
+    apt-get install -y tomcat7 ttf-mscorefonts-installer gdal-bin
     
 # gdal-bin required for ogr extension (ogr2ogr)
     
@@ -29,12 +29,9 @@ ENV GEOSERVER_DATA_DIR /opt/geoserver_data_dir
 # it also has GWC built in: decide whether to keep it or not ...
 ENV GEOWEBCACHE_CACHE_DIR /var/cache/geowebcache_cache_dir
 
-# TODO: generate + use keystore
-#sudo keytool -genkey -dname "CN=localhost, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown" -alias georchestra_localhost -keystore /etc/tomcat7/keystore -storepass STOREPASSWORD -keypass STOREPASSWORD -keyalg RSA -keysize 2048
-
 # override java opts at run time with eg docker run -d -p 49154:8080 --name geoserver0 -e "JAVA_OPTS=xxxx" geor_geoserver
 ENV JAVA_OPTS "-Djava.awt.headless=true \
-            -Xms1G -Xmx1G -XX:PermSize=256m -XX:MaxPermSize=256m \
+            -Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m \
             -Dfile.encoding=UTF8 \
             -Djavax.servlet.request.encoding=UTF-8 \
             -Djavax.servlet.response.encoding=UTF-8 \
@@ -42,19 +39,23 @@ ENV JAVA_OPTS "-Djava.awt.headless=true \
             -XX:+UseParNewGC -XX:ParallelGCThreads=2 \
             -XX:SoftRefLRUPolicyMSPerMB=36000 \
             -XX:NewRatio=2 \
-            -XX:+AggressiveOpts"
-            
-            #~ -Djavax.net.ssl.trustStore=/etc/tomcat6/keystore \
-            #~ -Djavax.net.ssl.trustStorePassword=STOREPASSWORD
+            -XX:+AggressiveOpts \
+            -Djavax.net.ssl.trustStore=/etc/tomcat7/keystore \
+            -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"
 
+RUN rm -rf /var/lib/tomcat7/webapps/*
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
+RUN chmod a+r /var/lib/tomcat7/webapps/*.war
+
+COPY keystore /etc/tomcat7/
 
 # Expose the port where tomcat is listening
 RUN sed -i 's/8080/8380/' /var/lib/tomcat7/conf/server.xml
 EXPOSE 8380
 
 # Add VOLUMEs to allow backup & sharing
-#VOLUME  ["/opt/geoserver_data_dir", "/var/cache/geowebcache_cache_dir", "/tmp"]
+#~ VOLUME  ["/opt/geoserver_data_dir", "/var/cache/geowebcache_cache_dir", "/tmp"]
+VOLUME  ["/tmp"]
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
