@@ -20,7 +20,7 @@ RUN /etc/init.d/slapd start && \
     wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra-root.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret && \
     wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret
 
-# Expose the PostgreSQL port
+# Expose the ldap port
 EXPOSE 389
 
 # Add VOLUMEs to allow backup of databases

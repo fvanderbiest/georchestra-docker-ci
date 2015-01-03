@@ -25,10 +25,16 @@ RUN mkdir -p /var/lib/tomcat6/webapps/ROOT && \
     unzip -e /var/lib/tomcat6/webapps/ROOT.war -d /var/lib/tomcat6/webapps/ROOT && \
     chown -R tomcat6:tomcat6 /var/lib/tomcat6/webapps/ROOT
 
+RUN mkdir -p /var/lib/tomcat6/webapps/cas && \
+    unzip -e /var/lib/tomcat6/webapps/cas.war -d /var/lib/tomcat6/webapps/cas && \
+    chown -R tomcat6:tomcat6 /var/lib/tomcat6/webapps/cas
+
 # replace the webapp's own proxy-servlet.xml & properties file in order to link with the database and other containers
 COPY proxy-servlet.xml /var/lib/tomcat6/webapps/ROOT/WEB-INF/
 COPY security-proxy.properties /var/lib/tomcat6/webapps/ROOT/WEB-INF/
 COPY log4j.properties /var/lib/tomcat6/webapps/ROOT/WEB-INF/classes/
+# cas customization:
+COPY cas.properties /var/lib/tomcat6/webapps/cas/WEB-INF/
 
 COPY keystore /etc/tomcat6/
 ENV JAVA_OPTS "-Djavax.net.ssl.trustStore=/etc/tomcat6/keystore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"              
