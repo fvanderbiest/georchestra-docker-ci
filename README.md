@@ -35,4 +35,10 @@ Run the stack with:
 ```
 fig up
 ```
+Stop it with CTRL + C
+
+In case you make changes to the Dockerfiles, remember you have to:
+ - remove the containers with ```fig rm```
+ - remove the image you modified with ```docker rmi -f docker_proxycas``` (in case you modified proxycas/Dockerfile)
+... before running again ```fig up```
 
