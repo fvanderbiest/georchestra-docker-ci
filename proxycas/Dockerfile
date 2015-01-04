@@ -39,9 +39,13 @@ COPY cas.properties /var/lib/tomcat6/webapps/cas/WEB-INF/
 COPY keystore /etc/tomcat6/
 ENV JAVA_OPTS "-Djavax.net.ssl.trustStore=/etc/tomcat6/keystore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"              
 
-RUN sed -i 's/8080/8180/' /var/lib/tomcat6/conf/server.xml
+
+# configure connector on port 8443 for CAS ticket validation:
+COPY server.xml /var/lib/tomcat6/conf/
 
 # Expose the port where tomcat is listening
+#RUN sed -i 's/8080/8180/' /var/lib/tomcat6/conf/server.xml
+# line above is useless since the port has already been customized in server.xml
 EXPOSE 8180
 
 VOLUME ["/tmp"] # server logs
