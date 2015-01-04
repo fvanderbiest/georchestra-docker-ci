@@ -26,7 +26,7 @@ mkdir -p ~/docker/volumes/georchestra/postgresql_logs \
     ~/docker/volumes/georchestra/mapfishapp_logs \
     ~/docker/volumes/georchestra/ldapadmin_logs \
     ~/docker/volumes/georchestra/geoserver_logs && \
-    chmod -R a+r ~/docker/volumes/georchestra/*
+    chmod -R a+rw ~/docker/volumes/georchestra/*
 ```
 
 ## build & run
