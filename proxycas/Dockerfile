@@ -36,9 +36,13 @@ COPY log4j.properties /var/lib/tomcat6/webapps/ROOT/WEB-INF/classes/
 # cas customization:
 COPY cas.properties /var/lib/tomcat6/webapps/cas/WEB-INF/
 
+# the keystore is for the server (cas)
 COPY keystore /etc/tomcat6/
-ENV JAVA_OPTS "-Djavax.net.ssl.trustStore=/etc/tomcat6/keystore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"              
+# the trustStore is for the client (cas-client inside proxy)
+COPY truststore /etc/tomcat6/
+# see http://stackoverflow.com/questions/2200176/keytool-create-a-trusted-self-signed-certificate
 
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat6/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD -Xms256m -Xmx256m \"" >> /etc/default/tomcat6
 
 # configure connector on port 8443 for CAS ticket validation:
 COPY server.xml /var/lib/tomcat6/conf/

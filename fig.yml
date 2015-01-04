@@ -1,3 +1,23 @@
+# ambassador is required to overcome a fig limitation.
+# we need proxycas and apache to know each other.
+# there is no other way, see https://github.com/docker/fig/issues/666
+#~ ambassador:
+    #~ image: cpuguy83/docker-grand-ambassador
+    #~ volumes:
+      #~ - "/var/run/docker.sock:/var/run/docker.sock"
+    #~ command: "-name docker_apache_1 -name docker_proxycas_1"
+
+apache:
+    build: ./apache
+    ports:
+        - "80:80"
+        - "443:443"
+    volumes:
+        - ~/docker/volumes/georchestra/apache_logs:/tmp
+    links:
+        - "proxycas:proxy_host"
+        #~ - "ambassador:proxycas"
+        
 database:
     build: ./postgresql
     expose:
@@ -18,25 +38,18 @@ ldap:
     #volumes:
     #    - ~/docker/volumes/georchestra/openldap_data:/etc/ldap/slapd.d
 
-apache:
-    build: ./apache
-    ports:
-        - "80:80"
-        - "443:443"
-    volumes:
-        - ~/docker/volumes/georchestra/apache_logs:/tmp
-    links:
-        - proxycas:proxy_host
-
 proxycas:
     build: ./proxycas
     privileged: true
     ports:
         - "8180:8180"
     links:
+        # this one is required for the proxy's cas client to connect to vm-georchestra:443
+        #- "ambassador:apache"
         - ldap:ldap_host
+        #~ - apache:vm-georchestra
         #~ - mapfishapp:mapfishapp_host
-        #~ - ldapadmin:ldapadmin_host
+        - ldapadmin:ldapadmin_host
         - catalogapp:catalogapp_host
         #~ - geoserver:geoserver_host
     volumes:
@@ -53,13 +66,13 @@ proxycas:
     #~ volumes:
         #~ - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
 
-geoserver:
-    build: ./geoserver
-    privileged: true
-    expose:
-        - "8380"
-    volumes:
-        - ~/docker/volumes/georchestra/geoserver_logs:/tmp
+#~ geoserver:
+    #~ build: ./geoserver
+    #~ privileged: true
+    #~ expose:
+        #~ - "8380"
+    #~ volumes:
+        #~ - ~/docker/volumes/georchestra/geoserver_logs:/tmp
         
 ldapadmin:
     build: ./ldapadmin
