@@ -18,18 +18,18 @@ Install Fig:
 curl -L https://github.com/docker/fig/releases/download/1.0.1/fig-`uname -s`-`uname -m` > /usr/local/bin/fig; chmod +x /usr/local/bin/fig
 ```
 
-Create directories on the host for logs (volumes)
-
+Create directories on the host for logs (volumes):
 ```
-mkdir -p ~/docker/volumes/georchestra/postgresql_logs
-mkdir -p ~/docker/volumes/georchestra/apache_logs
-mkdir -p ~/docker/volumes/georchestra/proxycas_logs
-mkdir -p ~/docker/volumes/georchestra/mapfishapp_logs
-mkdir -p ~/docker/volumes/georchestra/geoserver_logs
-chmod -R a+r ~/docker/volumes/georchestra/*
+mkdir -p ~/docker/volumes/georchestra/postgresql_logs \
+    ~/docker/volumes/georchestra/apache_logs \
+    ~/docker/volumes/georchestra/proxycas_logs \
+    ~/docker/volumes/georchestra/mapfishapp_logs \
+    ~/docker/volumes/georchestra/ldapadmin_logs \
+    ~/docker/volumes/georchestra/geoserver_logs && \
+    chmod -R a+r ~/docker/volumes/georchestra/*
 ```
 
-## build images
+## build & run
 
 Run the stack with:
 ```
@@ -37,8 +37,24 @@ fig up
 ```
 Stop it with CTRL + C
 
-In case you make changes to the Dockerfiles, remember you have to:
+To get the IP of the front server:
+```
+docker inspect docker_apache_1 | grep IPAddress
+```
+It should be something like 172.17.0.xxx
+
+In your host machine:
+```
+echo "172.17.0.xxx       vm-georchestra" >> /etc/hosts
+```
+
+Open http://vm-georchestra/header/ in your browser and voila !
+
+
+## customizing the images
+
+In case you make changes to the Dockerfiles, and before running again ```fig up```, remember you have to:
  - remove the containers with ```fig rm```
- - remove the image you modified with ```docker rmi -f docker_proxycas``` (in case you modified proxycas/Dockerfile)
-... before running again ```fig up```
+ - remove the previous images with eg ```docker rmi -f docker_proxycas``` (in case you modified proxycas/Dockerfile)
+
 
