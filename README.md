@@ -71,6 +71,13 @@ In case you make changes to the Dockerfiles, and before running again ```fig up`
 
 ## debugging
 
+In order to see what's going on in the containers, open a console with, eg:
+```
+docker exec -it docker_proxycas_1 bash
+```
+... where ```docker_proxycas_1``` is the name of the running container (retrieve it with ```docker ps```).
+
+For the network:
 ```
 sudo tcpdump -X -i docker0 tcp port XXXX
 ```
