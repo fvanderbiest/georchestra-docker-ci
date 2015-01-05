@@ -49,7 +49,7 @@ Register it in your host machine:
 echo "172.17.0.xx       vm-georchestra" >> /etc/hosts
 ```
 
-... or with a one liner:
+... or with a one-liner:
 ```
 sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
 ```
