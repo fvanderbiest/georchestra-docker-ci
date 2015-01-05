@@ -37,18 +37,24 @@ fig up
 ```
 Stop it with CTRL + C
 
+
 To get the IP of the front server:
 ```
-docker inspect docker_apache_1 | grep IPAddress
+docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1
 ```
-It should be something like 172.17.0.xxx
+It should be something like 172.17.0.xx
 
-In your host machine:
+Register it in your host machine:
 ```
-echo "172.17.0.xxx       vm-georchestra" >> /etc/hosts
+echo "172.17.0.xx       vm-georchestra" >> /etc/hosts
 ```
 
-Open http://vm-georchestra/header/ in your browser and voila !
+... or with a one liner:
+```
+sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
+```
+
+Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !
 
 
 ## customizing the images
