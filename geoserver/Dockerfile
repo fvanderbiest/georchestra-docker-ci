@@ -29,25 +29,24 @@ ENV GEOSERVER_DATA_DIR /opt/geoserver_data_dir
 # it also has GWC built in: decide whether to keep it or not ...
 ENV GEOWEBCACHE_CACHE_DIR /var/cache/geowebcache_cache_dir
 
-# override java opts at run time with eg docker run -d -p 49154:8080 --name geoserver0 -e "JAVA_OPTS=xxxx" geor_geoserver
-ENV JAVA_OPTS "-Djava.awt.headless=true \
-            -Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m \
-            -Dfile.encoding=UTF8 \
-            -Djavax.servlet.request.encoding=UTF-8 \
-            -Djavax.servlet.response.encoding=UTF-8 \
-            -server \
-            -XX:+UseParNewGC -XX:ParallelGCThreads=2 \
-            -XX:SoftRefLRUPolicyMSPerMB=36000 \
-            -XX:NewRatio=2 \
-            -XX:+AggressiveOpts \
-            -Djavax.net.ssl.trustStore=/etc/tomcat7/keystore \
-            -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"
+COPY truststore /etc/tomcat7/
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore \
+    -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \
+    -Djava.awt.headless=true \
+    -Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m \
+    -Dfile.encoding=UTF8 \
+    -Djavax.servlet.request.encoding=UTF-8 \
+    -Djavax.servlet.response.encoding=UTF-8 \
+    -server \
+    -XX:+UseParNewGC -XX:ParallelGCThreads=2 \
+    -XX:SoftRefLRUPolicyMSPerMB=36000 \
+    -XX:NewRatio=2 \
+    -XX:+AggressiveOpts \"" >> /etc/default/tomcat7
 
 RUN rm -rf /var/lib/tomcat7/webapps/*
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
 RUN chmod a+r /var/lib/tomcat7/webapps/*.war
 
-COPY keystore /etc/tomcat7/
 
 # Expose the port where tomcat is listening
 RUN sed -i 's/8080/8380/' /var/lib/tomcat7/conf/server.xml

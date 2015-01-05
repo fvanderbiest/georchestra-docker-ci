@@ -19,9 +19,8 @@ RUN rm -rf /var/lib/tomcat7/webapps/*
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/catalogapp/target/catalogapp-template.war /var/lib/tomcat7/webapps/catalogapp.war
 RUN chmod a+r /var/lib/tomcat7/webapps/*.war
 
-
-COPY keystore /etc/tomcat7/
-ENV JAVA_OPTS "-Djavax.net.ssl.trustStore=/etc/tomcat7/keystore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD"  
+COPY truststore /etc/tomcat7/
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat7
 
 # Expose the port where tomcat is listening
 EXPOSE 8282
