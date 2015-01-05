@@ -51,6 +51,7 @@ echo "172.17.0.xx       vm-georchestra" >> /etc/hosts
 
 ... or with a one-liner:
 ```
+sudo sed -i '/vm-georchestra/d' /etc/hosts && \
 sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
 ```
 
