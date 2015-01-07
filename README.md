@@ -26,9 +26,14 @@ Create the directories on the host for the logs (volumes):
 ```
 mkdir -p ~/docker/volumes/georchestra/postgresql_logs \
     ~/docker/volumes/georchestra/apache_logs \
+    ~/docker/volumes/georchestra/catalogapp_logs \
+    ~/docker/volumes/georchestra/downloadform_logs \
     ~/docker/volumes/georchestra/proxycas_logs \
     ~/docker/volumes/georchestra/mapfishapp_logs \
     ~/docker/volumes/georchestra/ldapadmin_logs \
+    ~/docker/volumes/georchestra/analytics_logs \
+    ~/docker/volumes/georchestra/geonetwork_logs \
+    ~/docker/volumes/georchestra/geowebcache_logs \
     ~/docker/volumes/georchestra/geoserver_logs && \
     chmod -R a+rw ~/docker/volumes/georchestra/*
 ```

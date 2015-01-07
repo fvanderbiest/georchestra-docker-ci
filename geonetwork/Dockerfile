@@ -35,8 +35,8 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dgeonetwork.dir=/path/to/your/geonetwork_da
 
 
 # Expose the port where tomcat is listening
-RUN sed -i 's/8080/8286/' /var/lib/tomcat6/conf/server.xml
-EXPOSE 8286
+RUN sed -i 's/8080/8287/' /var/lib/tomcat6/conf/server.xml
+EXPOSE 8287
 
 VOLUME ["/tmp"] # server logs
 

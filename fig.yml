@@ -47,12 +47,15 @@ proxycas:
         # this one is required if the proxy's cas client has to connect to vm-georchestra:443
         #- "ambassador:apache"
         - ldap:ldap_host
-        #~ - apache:vm-georchestra
         #~ - mapfishapp:mapfishapp_host
+        - analytics:analytics_host
         - ldapadmin:ldapadmin_host
         - catalogapp:catalogapp_host
-        #~ - extractorapp:extractorapp_host
-        #~ - geoserver:geoserver_host
+        - downloadform:downloadform_host
+        - geonetwork:geonetwork_host
+        - extractorapp:extractorapp_host
+        - geoserver:geoserver_host
+        - geowebcache:geowebcache_host
     volumes:
         - ~/docker/volumes/georchestra/proxycas_logs:/tmp
 
@@ -67,13 +70,13 @@ proxycas:
     #~ volumes:
         #~ - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
 
-#~ geoserver:
-    #~ build: ./geoserver
-    #~ privileged: true
-    #~ expose:
-        #~ - "8380"
-    #~ volumes:
-        #~ - ~/docker/volumes/georchestra/geoserver_logs:/tmp
+geoserver:
+    build: ./geoserver
+    privileged: true
+    expose:
+        - "8380"
+    volumes:
+        - ~/docker/volumes/georchestra/geoserver_logs:/tmp
         
 ldapadmin:
     build: ./ldapadmin
@@ -91,13 +94,53 @@ catalogapp:
     privileged: true
     ports:
         - "8282"
+    volumes:
+        - ~/docker/volumes/georchestra/catalogapp_logs:/tmp
 
-#~ extractorapp:
-    #~ build: ./extractorapp
-    #~ privileged: true
-    #~ ports:
-        #~ - "8283"
-    #~ links:
-        #~ - database:postgresql_host
-    #~ volumes:
-        #~ - ~/docker/volumes/georchestra/extractorapp_logs:/tmp
+extractorapp:
+    build: ./extractorapp
+    privileged: true
+    ports:
+        - "8283"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/extractorapp_logs:/tmp
+
+geowebcache:
+    build: ./geowebcache
+    privileged: true
+    ports:
+        - "8284"
+    volumes:
+        - ~/docker/volumes/georchestra/geowebcache_logs:/tmp
+
+downloadform:
+    build: ./downloadform
+    privileged: true
+    ports:
+        - "8285"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/downloadform_logs:/tmp
+  
+analytics:
+    build: ./analytics
+    privileged: true
+    ports:
+        - "8286"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/analytics_logs:/tmp
+        
+geonetwork:
+    build: ./geonetwork
+    privileged: true
+    ports:
+        - "8287"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/geonetwork_logs:/tmp
