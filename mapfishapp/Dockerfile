@@ -15,6 +15,8 @@ ENV DEBIAN_FRONTEND noninterative
 RUN apt-get update && \
     apt-get install -y tomcat7
 
+# TODO: native libs !
+
 RUN rm -rf /var/lib/tomcat7/webapps/*
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/mapfishapp/target/mapfishapp-template.war /var/lib/tomcat7/webapps/mapfishapp.war
 
