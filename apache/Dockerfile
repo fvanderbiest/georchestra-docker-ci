@@ -20,16 +20,13 @@ RUN a2enmod proxy_connect proxy proxy_http ssl rewrite headers
 
 # Copy modules configuration files
 ADD georchestra-site /var/www/georchestra/
-RUN sed -i 's/localhost:8180/proxy_host:8180/' /var/www/georchestra/conf/*.conf 
+RUN sed -i 's/localhost:8180/proxycas:8180/' /var/www/georchestra/conf/*.conf 
 # Create the apache site
 ADD apache-config.conf /etc/apache2/sites-enabled/georchestra.conf
 
 RUN a2dissite 000-default default-ssl
 
 RUN echo "127.0.0.1       vm-georchestra" >> /etc/hosts
-
-# SSL TODO
-# see eg http://www.unix.com/shell-programming-and-scripting/107305-shell-script-provide-answers-ssl-cert-request.html
 
 # Expose the web ports
 EXPOSE 80 443

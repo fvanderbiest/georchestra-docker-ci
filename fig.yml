@@ -15,7 +15,7 @@ apache:
     volumes:
         - ~/docker/volumes/georchestra/apache_logs:/tmp
     links:
-        - "proxycas:proxy_host"
+        - proxycas
         #~ - "ambassador:proxycas"
         
 database:
@@ -51,6 +51,7 @@ proxycas:
         #~ - mapfishapp:mapfishapp_host
         - ldapadmin:ldapadmin_host
         - catalogapp:catalogapp_host
+        #~ - extractorapp:extractorapp_host
         #~ - geoserver:geoserver_host
     volumes:
         - ~/docker/volumes/georchestra/proxycas_logs:/tmp
@@ -90,3 +91,13 @@ catalogapp:
     privileged: true
     ports:
         - "8282"
+
+#~ extractorapp:
+    #~ build: ./extractorapp
+    #~ privileged: true
+    #~ ports:
+        #~ - "8283"
+    #~ links:
+        #~ - database:postgresql_host
+    #~ volumes:
+        #~ - ~/docker/volumes/georchestra/extractorapp_logs:/tmp
