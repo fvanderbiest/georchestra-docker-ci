@@ -141,5 +141,6 @@ geonetwork:
         - "8287"
     links:
         - database:postgresql_host
+        - ldap:ldap_host
     volumes:
         - ~/docker/volumes/georchestra/geonetwork_logs:/tmp
