@@ -47,7 +47,7 @@ proxycas:
         # this one is required if the proxy's cas client has to connect to vm-georchestra:443
         #- "ambassador:apache"
         - ldap:ldap_host
-        #~ - mapfishapp:mapfishapp_host
+        - mapfishapp:mapfishapp_host
         - analytics:analytics_host
         - ldapadmin:ldapadmin_host
         - catalogapp:catalogapp_host
@@ -59,16 +59,15 @@ proxycas:
     volumes:
         - ~/docker/volumes/georchestra/proxycas_logs:/tmp
 
-# Broken build for now, see https://github.com/georchestra/georchestra/issues/857
-#~ mapfishapp:
-    #~ build: ./mapfishapp
-    #~ privileged: true
-    #~ ports:
-        #~ - "8280"
-    #~ links:
-        #~ - database:postgresql_host
-    #~ volumes:
-        #~ - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
+mapfishapp:
+    build: ./mapfishapp
+    privileged: true
+    ports:
+        - "8280"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
 
 geoserver:
     build: ./geoserver
