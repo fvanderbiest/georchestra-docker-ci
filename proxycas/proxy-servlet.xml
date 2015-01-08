@@ -30,10 +30,10 @@
                     <entry key="mapfishapp"    value="http://mapfishapp_host:8280/mapfishapp/" />
                     <entry key="ldapadmin"     value="http://ldapadmin_host:8281/ldapadmin/" />
                     <entry key="catalogapp"    value="http://catalogapp_host:8282/catalogapp/" />
-                    <entry key="extractorapp"    value="http://extractorapp_host:8283/extractorapp/" />
-                    <entry key="geowebcache"    value="http://geowebcache_host:8284/geowebcache/" />
-                    <entry key="downloadform"    value="http://downloadform_host:8285/downloadform/" />
-                    <entry key="analytics"    value="http://analytics_host:8286/analytics/" />
+                    <entry key="extractorapp"  value="http://extractorapp_host:8283/extractorapp/" />
+                    <entry key="geowebcache"   value="http://geowebcache_host:8284/geowebcache/" />
+                    <entry key="downloadform"  value="http://downloadform_host:8285/downloadform/" />
+                    <entry key="analytics"     value="http://analytics_host:8286/analytics/" />
                     <entry key="geonetwork"    value="http://geonetwork_host:8287/geonetwork/" />
                </map>
           </property>
