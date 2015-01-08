@@ -46,7 +46,10 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat6/trus
 
 ## need proxycas host to know his name as relayed by apache
 # FIXME: does not work for some reason ...
-RUN echo "127.0.0.1       proxycas" >> /etc/hosts
+#RUN echo "127.0.0.1       proxycas" >> /etc/hosts
+
+ADD https://github.com/hiteshjasani/nim-mungehosts/releases/download/v0.1.1/mungehosts /usr/local/bin/mungehosts
+RUN chmod 755 /usr/local/bin/mungehosts
 
 # configure connector on port 8443 for CAS ticket validation:
 COPY server.xml /var/lib/tomcat6/conf/
@@ -61,5 +64,5 @@ VOLUME ["/tmp"] # server logs
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
 # command (the tail command); thus, the Docker container will keep running.
-CMD /etc/init.d/tomcat6 start && tail -F /var/log/tomcat6/catalina.out
+CMD mungehosts -l proxycas && /etc/init.d/tomcat6 start && tail -F /var/log/tomcat6/catalina.out
 
