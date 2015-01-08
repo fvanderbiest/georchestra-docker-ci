@@ -46,7 +46,7 @@ Run the stack with:
 fig up
 ```
 
-Register in your host machine the IP of the front server with a one-line:
+Register the IP of the front server in your host machine with this one-liner:
 ```
 sudo sed -i '/vm-georchestra/d' /etc/hosts && \
 sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
