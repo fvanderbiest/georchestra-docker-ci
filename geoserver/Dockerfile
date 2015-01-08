@@ -13,8 +13,9 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 # add contrib repository to fetch "core fonts for the web"
-RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib" >> /etc/apt/sources.list
-RUN echo "deb http://security.debian.org/ jessie/updates contrib" >> /etc/apt/sources.list
+# add non-free for imageio
+RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list
+RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get install -y tomcat7 ttf-mscorefonts-installer gdal-bin libjai-core-java libjai-imageio-core-java

@@ -13,7 +13,7 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN apt-get update && \
-    apt-get install -y tomcat7
+    apt-get install -y tomcat7 unzip
 
 
 RUN rm -rf /var/lib/tomcat7/webapps/*

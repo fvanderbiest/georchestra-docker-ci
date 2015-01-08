@@ -13,10 +13,10 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN apt-get update && \
-    apt-get install -y tomcat6
+    apt-get install -y tomcat6 unzip
 
 RUN rm -rf /var/lib/tomcat6/webapps/*
-ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geonetwork/target/geonetwork-template.war /var/lib/tomcat6/webapps/geonetwork.war
+ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geonetwork/web/target/geonetwork-template.war /var/lib/tomcat6/webapps/geonetwork.war
 
 RUN mkdir -p /var/lib/tomcat6/webapps/geonetwork && \
     unzip -e /var/lib/tomcat6/webapps/geonetwork.war -d /var/lib/tomcat6/webapps/geonetwork && \
