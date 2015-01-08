@@ -45,21 +45,8 @@ Run the stack with:
 ```
 fig up
 ```
-Stop it with CTRL + C
 
-
-To get the IP of the front server:
-```
-docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1
-```
-It should be something like 172.17.0.xx
-
-Register it in your host machine:
-```
-echo "172.17.0.xx       vm-georchestra" >> /etc/hosts
-```
-
-... or with a one-liner:
+Register in your host machine the IP of the front server with a one-line:
 ```
 sudo sed -i '/vm-georchestra/d' /etc/hosts && \
 sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
@@ -67,6 +54,7 @@ sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_
 
 Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !
 
+Note that you can stop the containers with CTRL + C
 
 ## customizing the images
 
@@ -76,6 +64,11 @@ In case you make changes to the Dockerfiles, and before running again ```fig up`
  - remove the previous images with eg ```docker rmi -f docker_proxycas``` (in case you modified proxycas/Dockerfile)
 
 ## debugging
+
+Inspect the logs:
+```
+tail -f ~/docker/volumes/georchestra/proxycas_logs/security-proxy.log
+```
 
 In order to see what's going on in the containers, open a console with, eg:
 ```
