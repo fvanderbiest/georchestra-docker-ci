@@ -45,6 +45,7 @@ COPY truststore /etc/tomcat6/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat6/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD -Xms256m -Xmx256m \"" >> /etc/default/tomcat6
 
 ## need proxycas host to know his name as relayed by apache
+# FIXME: does not work for some reason ...
 RUN echo "127.0.0.1       proxycas" >> /etc/hosts
 
 # configure connector on port 8443 for CAS ticket validation:

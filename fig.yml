@@ -20,7 +20,7 @@ apache:
         
 database:
     build: ./postgresql
-    expose:
+    ports:
         - "5432"
     volumes:
         - ~/docker/volumes/georchestra/postgresql_logs:/var/log/postgresql
@@ -31,7 +31,7 @@ database:
 
 ldap:
     build: ./openldap
-    expose:
+    ports:
         - "389"
     # we'll see data volumes later on
     # https://docs.docker.com/userguide/dockervolumes/
@@ -73,7 +73,7 @@ proxycas:
 geoserver:
     build: ./geoserver
     privileged: true
-    expose:
+    ports:
         - "8380"
     volumes:
         - ~/docker/volumes/georchestra/geoserver_logs:/tmp
@@ -81,7 +81,7 @@ geoserver:
 ldapadmin:
     build: ./ldapadmin
     privileged: true
-    expose:
+    ports:
         - "8281"
     links:
         - ldap:ldap_host
