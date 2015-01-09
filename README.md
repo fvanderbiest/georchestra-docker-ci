@@ -3,7 +3,7 @@
 This repository contains the [docker](https://www.docker.com/) and [fig](http://www.fig.sh/) configuration files required to build a basic [geOrchestra](http://www.georchestra.org) SDI instance.
 
 The goal is to setup a dev or demo server, but this is **NOT** for production use.  
-If you need a provisioning tool, have a look at this contributed [geOrchestra ansible playbook](https://github.com/landryb/georchestra-ansible).
+If you need a [provisioning](https://docs.vagrantup.com/v2/provisioning/ansible.html) tool, have a look at this contributed [geOrchestra ansible playbook](https://github.com/landryb/georchestra-ansible).
 
 ## pre-requisites
 
