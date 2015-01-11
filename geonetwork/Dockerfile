@@ -29,9 +29,14 @@ COPY config-overrides-georchestra.xml /var/lib/tomcat6/webapps/geonetwork/WEB-IN
 COPY truststore /etc/tomcat6/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat6/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat6
 
+# add the GN data dir submodule as a submodule
+RUN mkdir /opt/geonetwork_data_dir
+COPY geonetwork_minimal_datadir /opt/geonetwork_data_dir
+RUN chown -R tomcat6 /opt/geonetwork_data_dir
+
 # TODO: add locally the GN submodule as a submodule
 # then copy it into the VM
-RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dgeonetwork.dir=/path/to/your/geonetwork_data_dir -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat-georchestra/webapps/geonetwork/WEB-INF/config-overrides-georchestra.xml \"" >> /etc/default/tomcat6
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dgeonetwork.dir=/opt/geonetwork_data_dir -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat6/webapps/geonetwork/WEB-INF/config-overrides-georchestra.xml \"" >> /etc/default/tomcat6
 
 
 # Expose the port where tomcat is listening

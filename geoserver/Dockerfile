@@ -38,7 +38,7 @@ COPY geoserver_minimal_datadir /opt/geoserver_data_dir
 RUN chown -R tomcat7 /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
 
 # then copy it into the VM
-#COPY truststore /etc/tomcat7/
+COPY truststore /etc/tomcat7/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat7
 # data dirs:
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -DGEOSERVER_DATA_DIR=/opt/geoserver_data_dir -DGEOWEBCACHE_CACHE_DIR=/var/cache/geowebcache_cache_dir \"" >> /etc/default/tomcat7
