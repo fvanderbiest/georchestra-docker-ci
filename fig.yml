@@ -48,7 +48,7 @@ proxycas:
         #- "ambassador:apache"
         - ldap:ldap_host
         - mapfishapp:mapfishapp_host
-        - analytics:analytics_host
+        #~ - analytics:analytics_host
         - ldapadmin:ldapadmin_host
         #~ - catalogapp:catalogapp_host
         #~ - downloadform:downloadform_host

@@ -24,9 +24,7 @@ RUN mkdir -p /var/lib/tomcat7/webapps/ldapadmin && \
     chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/ldapadmin 
 
 # replace the webapp's own config in order to link with the LDAP + PG hosts
-COPY webmvc-config.xml /var/lib/tomcat7/webapps/ldapadmin/WEB-INF/spring/
 COPY ldapadmin.properties /var/lib/tomcat7/webapps/ldapadmin/WEB-INF/spring/
-# Better (TODO) replace values with sed in the original webapp's file
 
 
 COPY truststore /etc/tomcat7/
