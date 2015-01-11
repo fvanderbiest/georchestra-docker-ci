@@ -18,7 +18,12 @@ RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/a
 RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y tomcat7 ttf-mscorefonts-installer gdal-bin libjai-core-java libjai-imageio-core-java
+    apt-get install -y tomcat7 ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin libjai-core-java libjai-imageio-core-java
+# gdal-bin required for ogr extension (ogr2ogr)
+
+# turbojpeg
+ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
+RUN dpkg -i /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 
 # jai + imageio:
 RUN ln -s /usr/share/java/jai_core.jar /usr/share/tomcat7/lib/jai_core.jar
@@ -27,25 +32,25 @@ RUN ln -s /usr/share/java/mlibwrapper_jai.jar /usr/share/tomcat7/lib/mlibwrapper
 RUN ln -s /usr/share/java/jai_imageio.jar /usr/share/tomcat7/lib/jai_imageio.jar
 RUN ln -s /usr/share/java/clibwrapper_jiio.jar /usr/share/tomcat7/lib/clibwrapper_jiio.jar
 
-# gdal-bin required for ogr extension (ogr2ogr)
-    
-RUN mkdir /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir && \
-    chown tomcat7 /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
+# add the geoserver data dir submodule as a submodule
+RUN mkdir /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
+COPY geoserver_minimal_datadir /opt/geoserver_data_dir
+RUN chown -R tomcat7 /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
 
-# TODO: native libs !
-
-# TODO: add locally the geoserver data dir submodule as a submodule
 # then copy it into the VM
-COPY truststore /etc/tomcat7/
+#COPY truststore /etc/tomcat7/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat7
 # data dirs:
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -DGEOSERVER_DATA_DIR=/opt/geoserver_data_dir -DGEOWEBCACHE_CACHE_DIR=/var/cache/geowebcache_cache_dir \"" >> /etc/default/tomcat7
 # UTF-8
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dfile.encoding=UTF8 -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 \"" >> /etc/default/tomcat7
 # RAM:
-RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Xms512m -Xmx512m -XX:PermSize=256m -XX:MaxPermSize=256m \"" >> /etc/default/tomcat7
+RUN sed -i '/java.awt.headless/d' /etc/default/tomcat7
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Xms1G -Xmx1G -XX:PermSize=256m -XX:MaxPermSize=256m \"" >> /etc/default/tomcat7
 # optimisations:
-RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -server -XX:+UseParNewGC -XX:ParallelGCThreads=2 -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:NewRatio=2 -XX:+AggressiveOpts \"" >> /etc/default/tomcat7
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -server -Djava.awt.headless=true -XX:+UseParNewGC -XX:ParallelGCThreads=2 -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:NewRatio=2 -XX:+AggressiveOpts \"" >> /etc/default/tomcat7
+# turboJPEG:
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/opt/libjpeg-turbo/lib64/ \"" >> /etc/default/tomcat7
 
 
 RUN rm -rf /var/lib/tomcat7/webapps/*
@@ -62,5 +67,4 @@ VOLUME  ["/tmp"]
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
 # command (the tail command); thus, the Docker container will keep running.
-#~ CMD sudo /etc/init.d/tomcat7 start && tail -f /var/log/tomcat7/catalina.out
 CMD /etc/init.d/tomcat7 start && tail -F /var/log/tomcat7/catalina.out

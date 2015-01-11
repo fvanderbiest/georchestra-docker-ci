@@ -42,11 +42,16 @@ mkdir -p ~/docker/volumes/georchestra/postgresql_logs \
     chmod -R a+rw ~/docker/volumes/georchestra/*
 ```
 
+Checkout the repo:
+```
+git clone --recursive https://github.com/georchestra/docker.git ~/docker_georchestra
+```
+
 ## build & run
 
 Run the stack with:
 ```
-fig up
+cd ~/docker_georchestra && fig up
 ```
 
 Register the IP of the front server in your host machine with this one-liner:

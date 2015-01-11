@@ -1,3 +1,9 @@
 [submodule "apache/georchestra-site/htdocs"]
 	path = apache/georchestra-site/htdocs
 	url = https://github.com/georchestra/htdocs.git
+[submodule "geoserver/geoserver_minimal_datadir"]
+	path = geoserver/geoserver_minimal_datadir
+	url = https://github.com/georchestra/geoserver_minimal_datadir.git
+[submodule "geonetwork/geonetwork_minimal_datadir"]
+	path = geonetwork/geonetwork_minimal_datadir
+	url = https://github.com/georchestra/geonetwork_minimal_datadir.git
