@@ -17,7 +17,9 @@ RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/a
 RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y tomcat7 libjai-core-java libjai-imageio-core-java
+    apt-get install -y tomcat7 unzip
+
+RUN apt-get install -y libjai-core-java libjai-imageio-core-java
 
 # jai + imageio:
 RUN ln -s /usr/share/java/jai_core.jar /usr/share/tomcat7/lib/jai_core.jar

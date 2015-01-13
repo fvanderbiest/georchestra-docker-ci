@@ -18,7 +18,9 @@ RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/a
 RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y tomcat7 ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin libjai-core-java libjai-imageio-core-java
+    apt-get install -y tomcat7 unzip
+
+RUN apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin libjai-core-java libjai-imageio-core-java
 # gdal-bin required for ogr extension (ogr2ogr)
 
 # turbojpeg
