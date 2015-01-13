@@ -18,6 +18,7 @@ ADD https://raw.github.com/georchestra/georchestra/master/mapfishapp/database.sq
 ADD https://raw.github.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
 ADD https://raw.github.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
 ADD https://raw.github.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
+ADD https://raw.github.com/georchestra/geofence/georchestra/doc/setup/sql/002_create_schema_postgres.sql /tmp/geofence.sql
 RUN chmod a+r /tmp/*.sql
 
 # Run the rest of the commands as the ``postgres`` user
@@ -29,15 +30,21 @@ RUN /etc/init.d/postgresql start && \
     psql -c "CREATE USER georchestra WITH SUPERUSER PASSWORD 'georchestra';" && \
     psql -c "CREATE USER geonetwork WITH SUPERUSER PASSWORD 'georchestra';" && \
     createdb -O georchestra georchestra && \
+    createlang plpgsql georchestra && \
+    psql -f /usr/share/postgresql/9.4/contrib/postgis-2.1/postgis.sql georchestra && \
+    psql -f /usr/share/postgresql/9.4/contrib/postgis-2.1/spatial_ref_sys.sql georchestra && \
     psql -d georchestra -f /tmp/mapfishapp.sql && \
     psql -d georchestra -f /tmp/downloadform.sql && \
     psql -d georchestra -f /tmp/ldapadmin.sql && \
     psql -d georchestra -f /tmp/ogcstatistics.sql && \
+    psql -d georchestra -f /tmp/geofence.sql && \
+    psql -d georchestra -c "INSERT INTO geofence.gf_gsinstance (id, baseURL, dateCreation, description, 'name', 'password', username) values (0, 'http://vm-georchestra/geoserver', 'now', 'locale geoserver', 'default-gs', 'gerlsSnFd6SmM', 'geoserver_privileged_user');" && \
     /etc/init.d/postgresql stop
 # FIXME: no superuser here
 
-# FIXME: pipe wget output into psql & remove this
-#RUN rm -rf /tmp/*.sql
+# FIXME: this will probably require the ambassdor pattern because geoserver and geofence must know each other here !
+# (http://vm-georchestra/geoserver is incorrect in the above INSERT, should be http://geoserver_host:xxxx/geoserver)
+
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible. 

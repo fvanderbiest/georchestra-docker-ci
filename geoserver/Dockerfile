@@ -68,8 +68,13 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -server -Djava.awt.headless=true -XX:+UsePar
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/opt/libjpeg-turbo/lib64/ \"" >> /etc/default/tomcat7
 
 
-ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
-RUN chmod a+r /var/lib/tomcat7/webapps/*.war
+ADD https://sdi.georchestra.org/ci/job/georchestra-template-geofence/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
+
+RUN mkdir -p /var/lib/tomcat7/webapps/geoserver && \
+    unzip -e /var/lib/tomcat7/webapps/geoserver.war -d /var/lib/tomcat7/webapps/geoserver && \
+    chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/geoserver
+# replace the webapp's own config in order to link with geofence:
+COPY geofence-geoserver.properties /var/lib/tomcat7/webapps/geoserver/WEB-INF/classes/
 
 
 # Expose the port where tomcat is listening

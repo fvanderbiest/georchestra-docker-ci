@@ -35,6 +35,7 @@ mkdir -p ~/docker/volumes/georchestra/postgresql_logs \
     ~/docker/volumes/georchestra/analytics_logs \
     ~/docker/volumes/georchestra/geonetwork_logs \
     ~/docker/volumes/georchestra/geowebcache_logs \
+    ~/docker/volumes/georchestra/geofence_logs \
     ~/docker/volumes/georchestra/geoserver_logs && \
     chmod -R a+rw ~/docker/volumes/georchestra/*
 ```

@@ -69,11 +69,24 @@ mapfishapp:
     volumes:
         - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
 
+geofence:
+    build: ./geofence
+    privileged: true
+    ports:
+        - "8288"
+    links:
+        - ldap:ldap_host
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/geofence_logs:/tmp
+
 geoserver:
     build: ./geoserver
     privileged: true
     ports:
         - "8380"
+    links:
+        - geofence:geofence_host
     volumes:
         - ~/docker/volumes/georchestra/geoserver_logs:/tmp
         
