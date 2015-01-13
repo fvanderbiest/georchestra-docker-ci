@@ -12,12 +12,14 @@ MAINTAINER PSC "psc@georchestra.org"
 
 ENV DEBIAN_FRONTEND noninterative
 
+RUN apt-get update && \
+    apt-get install -y tomcat7 unzip
+
+RUN rm -rf /var/lib/tomcat7/webapps/*
+
 # add non-free for imageio
 RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list
 RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
-
-RUN apt-get update && \
-    apt-get install -y tomcat7 unzip
 
 RUN apt-get install -y libjai-core-java libjai-imageio-core-java
 
@@ -28,8 +30,6 @@ RUN ln -s /usr/share/java/mlibwrapper_jai.jar /usr/share/tomcat7/lib/mlibwrapper
 RUN ln -s /usr/share/java/jai_imageio.jar /usr/share/tomcat7/lib/jai_imageio.jar
 RUN ln -s /usr/share/java/clibwrapper_jiio.jar /usr/share/tomcat7/lib/clibwrapper_jiio.jar
 
-
-RUN rm -rf /var/lib/tomcat7/webapps/*
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geowebcache-webapp/target/geowebcache-template.war /var/lib/tomcat7/webapps/geowebcache.war
 
 COPY truststore /etc/tomcat7/

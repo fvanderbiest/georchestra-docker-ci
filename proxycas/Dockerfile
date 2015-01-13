@@ -16,6 +16,7 @@ RUN apt-get update && \
     apt-get install -y tomcat6 unzip
 
 RUN rm -rf /var/lib/tomcat6/webapps/*
+
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/security-proxy/target/ROOT-template.war /var/lib/tomcat6/webapps/ROOT.war
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war /var/lib/tomcat6/webapps/cas.war
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war /var/lib/tomcat6/webapps/header-private.war

@@ -16,6 +16,7 @@ RUN apt-get update && \
     apt-get install -y tomcat6 unzip
 
 RUN rm -rf /var/lib/tomcat6/webapps/*
+
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geonetwork/web/target/geonetwork-template.war /var/lib/tomcat6/webapps/geonetwork.war
 
 RUN mkdir -p /var/lib/tomcat6/webapps/geonetwork && \

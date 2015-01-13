@@ -16,6 +16,7 @@ RUN apt-get update && \
     apt-get install -y tomcat7 unzip
 
 RUN rm -rf /var/lib/tomcat7/webapps/*
+
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/downloadform/target/downloadform-template.war /var/lib/tomcat7/webapps/downloadform.war
 
 RUN mkdir -p /var/lib/tomcat7/webapps/downloadform && \

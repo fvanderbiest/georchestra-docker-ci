@@ -12,20 +12,24 @@ MAINTAINER PSC "psc@georchestra.org"
 
 ENV DEBIAN_FRONTEND noninterative
 
+RUN apt-get update && \
+    apt-get install -y tomcat7 unzip
+
+RUN rm -rf /var/lib/tomcat7/webapps/*
+
 # add contrib repository to fetch "core fonts for the web"
 # add non-free for imageio
 RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list
 RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y tomcat7 unzip
-
-RUN apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin libjai-core-java libjai-imageio-core-java
+    apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin libjai-core-java libjai-imageio-core-java
 # gdal-bin required for ogr extension (ogr2ogr)
 
 # turbojpeg
 ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 RUN dpkg -i /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
+# TODO: utiliser le package debian officiel
 
 # jai + imageio:
 RUN ln -s /usr/share/java/jai_core.jar /usr/share/tomcat7/lib/jai_core.jar
@@ -55,7 +59,6 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -server -Djava.awt.headless=true -XX:+UsePar
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/opt/libjpeg-turbo/lib64/ \"" >> /etc/default/tomcat7
 
 
-RUN rm -rf /var/lib/tomcat7/webapps/*
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
 RUN chmod a+r /var/lib/tomcat7/webapps/*.war
 

@@ -16,6 +16,7 @@ RUN apt-get update && \
     apt-get install -y tomcat7 unzip
 
 RUN rm -rf /var/lib/tomcat7/webapps/*
+
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/catalogapp/target/catalogapp-template.war /var/lib/tomcat7/webapps/catalogapp.war
 RUN chmod a+r /var/lib/tomcat7/webapps/*.war
 
