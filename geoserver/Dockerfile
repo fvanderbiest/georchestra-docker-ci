@@ -23,8 +23,17 @@ RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/a
 RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
 
 RUN apt-get update && \
-    apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin libjai-core-java libjai-imageio-core-java
+    apt-get install -y libjai-core-java libjai-imageio-core-java
 # gdal-bin required for ogr extension (ogr2ogr)
+
+# jai + imageio:
+RUN ln -s /usr/share/java/jai_core.jar /usr/share/tomcat7/lib/jai_core.jar
+RUN ln -s /usr/share/java/jai_codec.jar /usr/share/tomcat7/lib/jai_codec.jar
+RUN ln -s /usr/share/java/mlibwrapper_jai.jar /usr/share/tomcat7/lib/mlibwrapper_jai.jar
+RUN ln -s /usr/share/java/jai_imageio.jar /usr/share/tomcat7/lib/jai_imageio.jar
+RUN ln -s /usr/share/java/clibwrapper_jiio.jar /usr/share/tomcat7/lib/clibwrapper_jiio.jar
+
+RUN apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin
 
 # turbojpeg
 ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb /tmp/libjpeg-turbo-official_1.4.0_amd64.deb

@@ -21,7 +21,8 @@ RUN rm -rf /var/lib/tomcat7/webapps/*
 RUN echo "deb http://ftp.fr.debian.org/debian jessie contrib non-free" >> /etc/apt/sources.list
 RUN echo "deb http://security.debian.org/ jessie/updates contrib non-free" >> /etc/apt/sources.list
 
-RUN apt-get install -y libjai-core-java libjai-imageio-core-java
+RUN apt-get update && \
+    apt-get install -y libjai-core-java libjai-imageio-core-java
 
 # jai + imageio:
 RUN ln -s /usr/share/java/jai_core.jar /usr/share/tomcat7/lib/jai_core.jar
