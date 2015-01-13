@@ -39,6 +39,8 @@ RUN chown -R tomcat6 /opt/geonetwork_data_dir
 # then copy it into the VM
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dgeonetwork.dir=/opt/geonetwork_data_dir -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat6/webapps/geonetwork/WEB-INF/config-overrides-georchestra.xml \"" >> /etc/default/tomcat6
 
+# workaround for https://github.com/georchestra/georchestra/issues/871
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.util.prefs.syncInterval=86400 \"" >> /etc/default/tomcat6
 
 # Expose the port where tomcat is listening
 RUN sed -i 's/8080/8287/' /var/lib/tomcat6/conf/server.xml
