@@ -28,4 +28,4 @@ EXPOSE 389
 #~ VOLUME  ["/etc/ldap/slapd.d"]
 
 # Set the default command to run when starting the container
-CMD /etc/init.d/slapd start && tail -F /var/log/syslog
+CMD /usr/sbin/slapd -h "ldap:/// ldapi:///" -g openldap -u openldap -F /etc/ldap/slapd.d -d 256
