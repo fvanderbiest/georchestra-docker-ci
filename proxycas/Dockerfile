@@ -45,10 +45,9 @@ COPY truststore /etc/tomcat6/
 
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat6/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD -Xms256m -Xmx256m \"" >> /etc/default/tomcat6
 
-## need proxycas host to know his name as relayed by apache
 # FIXME: does not work for some reason ...
 #RUN echo "127.0.0.1       proxycas" >> /etc/hosts
-
+# workaround:
 ADD https://github.com/hiteshjasani/nim-mungehosts/releases/download/v0.1.1/mungehosts /usr/local/bin/mungehosts
 RUN chmod 755 /usr/local/bin/mungehosts
 

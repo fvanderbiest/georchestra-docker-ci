@@ -1,22 +1,21 @@
 # ambassador is required to overcome a fig limitation.
-# we need proxy and apache to know each other.
+# we need geofence and apache to know each other.
 # there is no other way, see https://github.com/docker/fig/issues/666
-#~ ambassador:
-    #~ image: cpuguy83/docker-grand-ambassador
-    #~ volumes:
-      #~ - "/var/run/docker.sock:/var/run/docker.sock"
-    #~ command: "-name docker_apache_1 -name docker_proxycas_1"
+ambassador:
+    image: cpuguy83/docker-grand-ambassador
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    command: "-name docker_apache_1 -name docker_geofence_1"
 
 apache:
     build: ./apache
     ports:
-        - "80:80"
-        - "443:443"
+        - "80"
+        - "443"
     volumes:
         - ~/docker/volumes/georchestra/apache_logs:/tmp
     links:
         - proxycas
-        #~ - "ambassador:proxycas"
         
 database:
     build: ./postgresql
@@ -44,8 +43,6 @@ proxycas:
     ports:
         - "8180"
     links:
-        # this one is required if the proxy's cas client has to connect to vm-georchestra:443
-        #- "ambassador:apache"
         - ldap:ldap_host
         - mapfishapp:mapfishapp_host
         #~ - analytics:analytics_host
@@ -55,6 +52,7 @@ proxycas:
         - geonetwork:geonetwork_host
         - extractorapp:extractorapp_host
         - geoserver:geoserver_host
+        - geofence:geofence_host
         #~ - geowebcache:geowebcache_host
     volumes:
         - ~/docker/volumes/georchestra/proxycas_logs:/tmp
@@ -77,6 +75,7 @@ geofence:
     links:
         - ldap:ldap_host
         - database:postgresql_host
+        - "ambassador:apache"
     volumes:
         - ~/docker/volumes/georchestra/geofence_logs:/tmp
 

@@ -40,13 +40,6 @@ ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-o
 RUN dpkg -i /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 # TODO: utiliser le package debian officiel
 
-# jai + imageio:
-RUN ln -s /usr/share/java/jai_core.jar /usr/share/tomcat7/lib/jai_core.jar
-RUN ln -s /usr/share/java/jai_codec.jar /usr/share/tomcat7/lib/jai_codec.jar
-RUN ln -s /usr/share/java/mlibwrapper_jai.jar /usr/share/tomcat7/lib/mlibwrapper_jai.jar
-RUN ln -s /usr/share/java/jai_imageio.jar /usr/share/tomcat7/lib/jai_imageio.jar
-RUN ln -s /usr/share/java/clibwrapper_jiio.jar /usr/share/tomcat7/lib/clibwrapper_jiio.jar
-
 # add the geoserver data dir submodule as a submodule
 RUN mkdir /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
 COPY geoserver_minimal_datadir /opt/geoserver_data_dir

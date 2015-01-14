@@ -26,6 +26,7 @@
           <property name="targets">
                <map>
                     <entry key="geoserver"     value="http://geoserver_host:8380/geoserver/" />
+                    <entry key="geofence"      value="http://geofence_host:8288/geofence/" />
                     <entry key="header"        value="http://localhost:8180/header-private/" />
                     <entry key="mapfishapp"    value="http://mapfishapp_host:8280/mapfishapp/" />
                     <entry key="ldapadmin"     value="http://ldapadmin_host:8281/ldapadmin/" />
