@@ -75,7 +75,10 @@ RUN cp /usr/share/java/gdal.jar /var/lib/tomcat7/webapps/geoserver/WEB-INF/lib/g
 RUN sed -i 's/8080/8380/' /var/lib/tomcat7/conf/server.xml
 EXPOSE 8380
 
-VOLUME  ["/tmp"]
+# Create volume for geoserver data (shapefiles, etc)
+RUN mkdir /data && chown tomcat7 /data
+
+VOLUME  ["/tmp", "/data"]
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
