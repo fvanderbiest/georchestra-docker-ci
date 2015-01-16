@@ -88,6 +88,7 @@ geoserver:
         - geofence:geofence_host
     volumes:
         - ~/docker/volumes/georchestra/geoserver_logs:/tmp
+        - ~/docker/volumes/georchestra/geoserver_data:/data
         
 ldapadmin:
     build: ./ldapadmin
