@@ -58,8 +58,8 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Xms1G -Xmx1G -XX:PermSize=256m -XX:MaxPermS
 # optimisations:
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -server -Djava.awt.headless=true -XX:+UseParNewGC -XX:ParallelGCThreads=2 -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:NewRatio=2 -XX:+AggressiveOpts \"" >> /etc/default/tomcat7
 # turboJPEG:
-RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/opt/libjpeg-turbo/lib64/ \"" >> /etc/default/tomcat7
-
+# gdal jni:
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/usr/lib/jni:/opt/libjpeg-turbo/lib64/\"" >> /etc/default/tomcat7
 
 ADD https://sdi.georchestra.org/ci/job/georchestra-template-geofence/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
 
@@ -69,6 +69,9 @@ RUN mkdir -p /var/lib/tomcat7/webapps/geoserver && \
 # replace the webapp's own config in order to link with geofence:
 COPY geofence-geoserver.properties /var/lib/tomcat7/webapps/geoserver/WEB-INF/classes/
 
+# GDAL java bindings
+RUN rm -rf /var/lib/tomcat7/webapps/geoserver/WEB-INF/lib/imageio-ext-gdal-bindings-1.9.2.jar
+RUN cp /usr/share/java/gdal.jar /var/lib/tomcat7/webapps/geoserver/WEB-INF/lib/gdal.jar
 
 # Expose the port where tomcat is listening
 RUN sed -i 's/8080/8380/' /var/lib/tomcat7/conf/server.xml
