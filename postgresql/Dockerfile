@@ -36,9 +36,6 @@ RUN /etc/init.d/postgresql start && \
     /etc/init.d/postgresql stop
 # FIXME: no superuser here
 
-# FIXME: pipe wget output into psql & remove this
-#RUN rm -rf /tmp/*.sql
-
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible. 
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf
