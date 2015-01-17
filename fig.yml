@@ -10,8 +10,8 @@
 apache:
     build: ./apache
     ports:
-        - "80:80"
-        - "443:443"
+        - "80"
+        - "443"
     volumes:
         - ~/docker/volumes/georchestra/apache_logs:/tmp
     links:
@@ -44,11 +44,10 @@ proxycas:
     ports:
         - "8180"
     links:
-        # this one is required if the proxy's cas client has to connect to vm-georchestra:443
-        #- "ambassador:apache"
+        - database:postgresql_host
         - ldap:ldap_host
         - mapfishapp:mapfishapp_host
-        #~ - analytics:analytics_host
+        - analytics:analytics_host
         - ldapadmin:ldapadmin_host
         #~ - catalogapp:catalogapp_host
         #~ - downloadform:downloadform_host
@@ -125,16 +124,15 @@ extractorapp:
     #~ volumes:
         #~ - ~/docker/volumes/georchestra/downloadform_logs:/tmp
 
-# TODO: activate if after ogc services statistics have been activated too
-#~ analytics:
-    #~ build: ./analytics
-    #~ privileged: true
-    #~ ports:
-        #~ - "8286"
-    #~ links:
-        #~ - database:postgresql_host
-    #~ volumes:
-        #~ - ~/docker/volumes/georchestra/analytics_logs:/tmp
+analytics:
+    build: ./analytics
+    privileged: true
+    ports:
+        - "8286"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/volumes/georchestra/analytics_logs:/tmp
         
 geonetwork:
     build: ./geonetwork
