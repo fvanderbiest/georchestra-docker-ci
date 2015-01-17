@@ -25,12 +25,10 @@ RUN mkdir -p /var/lib/tomcat7/webapps/analytics && \
 
 # replace the webapp's own config
 COPY analytics.properties /var/lib/tomcat7/webapps/analytics/WEB-INF/
-
-# TODO: we will need a smtp service 
+COPY config.js /var/lib/tomcat7/webapps/analytics/js/app/
 
 COPY truststore /etc/tomcat7/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat7
-
 
 # Expose the port where tomcat is listening
 EXPOSE 8286

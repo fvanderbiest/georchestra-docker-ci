@@ -22,26 +22,12 @@ sudo apt-get install python-pip
 sudo pip install -U fig
 ```
 
-Create the directories on the host for the logs (volumes):
+Create the directories on the host for the tmp and data volumes:
 ```
-mkdir -p ~/docker/volumes/georchestra/postgresql_logs \
-    ~/docker/volumes/georchestra/apache_logs \
-    ~/docker/volumes/georchestra/catalogapp_logs \
-    ~/docker/volumes/georchestra/extractorapp_logs \
-    ~/docker/volumes/georchestra/downloadform_logs \
-    ~/docker/volumes/georchestra/proxycas_logs \
-    ~/docker/volumes/georchestra/mapfishapp_logs \
-    ~/docker/volumes/georchestra/ldapadmin_logs \
-    ~/docker/volumes/georchestra/analytics_logs \
-    ~/docker/volumes/georchestra/geonetwork_logs \
-    ~/docker/volumes/georchestra/geowebcache_logs \
-    ~/docker/volumes/georchestra/geofence_logs \
-    ~/docker/volumes/georchestra/geoserver_logs && \
-    ~/docker/volumes/georchestra/geoserver_data && \
-    chmod -R a+rw ~/docker/volumes/georchestra/*
+mkdir -p ~/docker/tmp ~/docker/data && chmod -R a+rw ~/docker/*
 ```
 
-Checkout the repo:
+Clone the repository:
 ```
 git clone -b geofence --recursive https://github.com/georchestra/docker.git ~/docker_georchestra
 ```
@@ -74,7 +60,7 @@ In case you make changes to the Dockerfiles, and before running again ```fig up`
 
 Inspect the logs:
 ```
-tail -f ~/docker/volumes/georchestra/proxycas_logs/security-proxy.log
+tail -f ~/docker/tmp/security-proxy.log
 ```
 
 In order to see what's going on in the containers, open a console with, eg:

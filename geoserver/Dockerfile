@@ -38,7 +38,6 @@ RUN apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin
 # turbojpeg
 ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 RUN dpkg -i /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
-# TODO: utiliser le package debian officiel
 
 # add the geoserver data dir submodule as a submodule
 RUN mkdir /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir

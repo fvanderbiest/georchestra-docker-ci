@@ -25,17 +25,17 @@
 
           <property name="targets">
                <map>
-                    <entry key="geoserver"     value="http://geoserver_host:8380/geoserver/" />
-                    <entry key="geofence"      value="http://geofence_host:8288/geofence/" />
-                    <entry key="header"        value="http://localhost:8180/header-private/" />
-                    <entry key="mapfishapp"    value="http://mapfishapp_host:8280/mapfishapp/" />
-                    <entry key="ldapadmin"     value="http://ldapadmin_host:8281/ldapadmin/" />
-                    <entry key="catalogapp"    value="http://catalogapp_host:8282/catalogapp/" />
-                    <entry key="extractorapp"  value="http://extractorapp_host:8283/extractorapp/" />
-                    <entry key="geowebcache"   value="http://geowebcache_host:8284/geowebcache/" />
-                    <entry key="downloadform"  value="http://downloadform_host:8285/downloadform/" />
                     <entry key="analytics"     value="http://analytics_host:8286/analytics/" />
+                    <entry key="catalogapp"    value="http://catalogapp_host:8282/catalogapp/" />
+                    <entry key="downloadform"  value="http://downloadform_host:8285/downloadform/" />
+                    <entry key="extractorapp"  value="http://extractorapp_host:8283/extractorapp/" />
+                    <entry key="geofence"      value="http://geofence_host:8288/geofence/" />
                     <entry key="geonetwork"    value="http://geonetwork_host:8287/geonetwork/" />
+                    <entry key="geoserver"     value="http://geoserver_host:8380/geoserver/" />
+                    <entry key="geowebcache"   value="http://geowebcache_host:8284/geowebcache/" />
+                    <entry key="header"        value="http://localhost:8180/header-private/" />
+                    <entry key="ldapadmin"     value="http://ldapadmin_host:8281/ldapadmin/" />
+                    <entry key="mapfishapp"    value="http://mapfishapp_host:8280/mapfishapp/" />
                </map>
           </property>
           <property name="requireCharsetContentTypes">

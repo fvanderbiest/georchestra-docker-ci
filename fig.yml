@@ -13,7 +13,7 @@ apache:
         - "80"
         - "443"
     volumes:
-        - ~/docker/volumes/georchestra/apache_logs:/tmp
+        - ~/docker/tmp:/tmp
     links:
         - proxycas
         
@@ -22,7 +22,7 @@ database:
     ports:
         - "5432"
     volumes:
-        - ~/docker/volumes/georchestra/postgresql_logs:/var/log/postgresql
+        - ~/docker/tmp:/var/log/postgresql
     # we'll see data volumes later on
     # https://docs.docker.com/userguide/dockervolumes/
     #    - ~/docker/volumes/georchestra/postgresql_etc:/etc/postgresql
@@ -32,10 +32,6 @@ ldap:
     build: ./openldap
     ports:
         - "389"
-    # we'll see data volumes later on
-    # https://docs.docker.com/userguide/dockervolumes/
-    #volumes:
-    #    - ~/docker/volumes/georchestra/openldap_data:/etc/ldap/slapd.d
 
 proxycas:
     build: ./proxycas
@@ -43,9 +39,10 @@ proxycas:
     ports:
         - "8180"
     links:
+        - database:postgresql_host
         - ldap:ldap_host
         - mapfishapp:mapfishapp_host
-        #~ - analytics:analytics_host
+        - analytics:analytics_host
         - ldapadmin:ldapadmin_host
         #~ - catalogapp:catalogapp_host
         #~ - downloadform:downloadform_host
@@ -55,7 +52,7 @@ proxycas:
         - geofence:geofence_host
         #~ - geowebcache:geowebcache_host
     volumes:
-        - ~/docker/volumes/georchestra/proxycas_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 mapfishapp:
     build: ./mapfishapp
@@ -65,7 +62,7 @@ mapfishapp:
     links:
         - database:postgresql_host
     volumes:
-        - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 geofence:
     build: ./geofence
@@ -77,7 +74,7 @@ geofence:
         - database:postgresql_host
         - "ambassador:apache"
     volumes:
-        - ~/docker/volumes/georchestra/geofence_logs:/tmp
+        - ~/docker/logs:/tmp
 
 geoserver:
     build: ./geoserver
@@ -87,8 +84,8 @@ geoserver:
     links:
         - geofence:geofence_host
     volumes:
-        - ~/docker/volumes/georchestra/geoserver_logs:/tmp
-        - ~/docker/volumes/georchestra/geoserver_data:/data
+        - ~/docker/tmp:/tmp
+        - ~/docker/data:/data
         
 ldapadmin:
     build: ./ldapadmin
@@ -99,7 +96,7 @@ ldapadmin:
         - ldap:ldap_host
         - database:postgresql_host
     volumes:
-        - ~/docker/volumes/georchestra/ldapadmin_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 #~ catalogapp:
     #~ build: ./catalogapp
@@ -107,7 +104,7 @@ ldapadmin:
     #~ ports:
         #~ - "8282"
     #~ volumes:
-        #~ - ~/docker/volumes/georchestra/catalogapp_logs:/tmp
+        #~ - ~/docker/tmp:/tmp
 
 extractorapp:
     build: ./extractorapp
@@ -117,7 +114,7 @@ extractorapp:
     links:
         - database:postgresql_host
     volumes:
-        - ~/docker/volumes/georchestra/extractorapp_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 #~ geowebcache:
     #~ build: ./geowebcache
@@ -125,7 +122,7 @@ extractorapp:
     #~ ports:
         #~ - "8284"
     #~ volumes:
-        #~ - ~/docker/volumes/georchestra/geowebcache_logs:/tmp
+        #~ - ~/docker/tmp:/tmp
 
 #~ downloadform:
     #~ build: ./downloadform
@@ -135,18 +132,17 @@ extractorapp:
     #~ links:
         #~ - database:postgresql_host
     #~ volumes:
-        #~ - ~/docker/volumes/georchestra/downloadform_logs:/tmp
+        #~ - ~/docker/tmp:/tmp
 
-# TODO: activate if after ogc services statistics have been activated too
-#~ analytics:
-    #~ build: ./analytics
-    #~ privileged: true
-    #~ ports:
-        #~ - "8286"
-    #~ links:
-        #~ - database:postgresql_host
-    #~ volumes:
-        #~ - ~/docker/volumes/georchestra/analytics_logs:/tmp
+analytics:
+    build: ./analytics
+    privileged: true
+    ports:
+        - "8286"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/tmp:/tmp
         
 geonetwork:
     build: ./geonetwork
@@ -157,4 +153,4 @@ geonetwork:
         - database:postgresql_host
         - ldap:ldap_host
     volumes:
-        - ~/docker/volumes/georchestra/geonetwork_logs:/tmp
+        - ~/docker/tmp:/tmp
