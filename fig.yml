@@ -1,29 +1,19 @@
-# ambassador is required to overcome a fig limitation.
-# we need proxy and apache to know each other.
-# there is no other way, see https://github.com/docker/fig/issues/666
-#~ ambassador:
-    #~ image: cpuguy83/docker-grand-ambassador
-    #~ volumes:
-      #~ - "/var/run/docker.sock:/var/run/docker.sock"
-    #~ command: "-name docker_apache_1 -name docker_proxycas_1"
-
 apache:
     build: ./apache
     ports:
         - "80"
         - "443"
     volumes:
-        - ~/docker/volumes/georchestra/apache_logs:/tmp
+        - ~/docker/tmp:/tmp
     links:
         - proxycas
-        #~ - "ambassador:proxycas"
         
 database:
     build: ./postgresql
     ports:
         - "5432"
     volumes:
-        - ~/docker/volumes/georchestra/postgresql_logs:/var/log/postgresql
+        - ~/docker/tmp:/var/log/postgresql
     # we'll see data volumes later on
     # https://docs.docker.com/userguide/dockervolumes/
     #    - ~/docker/volumes/georchestra/postgresql_etc:/etc/postgresql
@@ -33,10 +23,6 @@ ldap:
     build: ./openldap
     ports:
         - "389"
-    # we'll see data volumes later on
-    # https://docs.docker.com/userguide/dockervolumes/
-    #volumes:
-    #    - ~/docker/volumes/georchestra/openldap_data:/etc/ldap/slapd.d
 
 proxycas:
     build: ./proxycas
@@ -56,7 +42,7 @@ proxycas:
         - geoserver:geoserver_host
         #~ - geowebcache:geowebcache_host
     volumes:
-        - ~/docker/volumes/georchestra/proxycas_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 mapfishapp:
     build: ./mapfishapp
@@ -66,7 +52,7 @@ mapfishapp:
     links:
         - database:postgresql_host
     volumes:
-        - ~/docker/volumes/georchestra/mapfishapp_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 geoserver:
     build: ./geoserver
@@ -74,8 +60,8 @@ geoserver:
     ports:
         - "8380"
     volumes:
-        - ~/docker/volumes/georchestra/geoserver_logs:/tmp
-        - ~/docker/volumes/georchestra/geoserver_data:/data
+        - ~/docker/tmp:/tmp
+        - ~/docker/data:/data
         
 ldapadmin:
     build: ./ldapadmin
@@ -86,7 +72,7 @@ ldapadmin:
         - ldap:ldap_host
         - database:postgresql_host
     volumes:
-        - ~/docker/volumes/georchestra/ldapadmin_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 #~ catalogapp:
     #~ build: ./catalogapp
@@ -94,7 +80,7 @@ ldapadmin:
     #~ ports:
         #~ - "8282"
     #~ volumes:
-        #~ - ~/docker/volumes/georchestra/catalogapp_logs:/tmp
+        #~ - ~/docker/tmp:/tmp
 
 extractorapp:
     build: ./extractorapp
@@ -104,7 +90,7 @@ extractorapp:
     links:
         - database:postgresql_host
     volumes:
-        - ~/docker/volumes/georchestra/extractorapp_logs:/tmp
+        - ~/docker/tmp:/tmp
 
 #~ geowebcache:
     #~ build: ./geowebcache
@@ -112,7 +98,7 @@ extractorapp:
     #~ ports:
         #~ - "8284"
     #~ volumes:
-        #~ - ~/docker/volumes/georchestra/geowebcache_logs:/tmp
+        #~ - ~/docker/tmp:/tmp
 
 #~ downloadform:
     #~ build: ./downloadform
@@ -122,7 +108,7 @@ extractorapp:
     #~ links:
         #~ - database:postgresql_host
     #~ volumes:
-        #~ - ~/docker/volumes/georchestra/downloadform_logs:/tmp
+        #~ - ~/docker/tmp:/tmp
 
 analytics:
     build: ./analytics
@@ -132,7 +118,7 @@ analytics:
     links:
         - database:postgresql_host
     volumes:
-        - ~/docker/volumes/georchestra/analytics_logs:/tmp
+        - ~/docker/tmp:/tmp
         
 geonetwork:
     build: ./geonetwork
@@ -143,4 +129,4 @@ geonetwork:
         - database:postgresql_host
         - ldap:ldap_host
     volumes:
-        - ~/docker/volumes/georchestra/geonetwork_logs:/tmp
+        - ~/docker/tmp:/tmp
