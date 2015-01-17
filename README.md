@@ -2,8 +2,15 @@
 
 This repository contains the [docker](https://www.docker.com/) and [fig](http://www.fig.sh/) configuration files required to build a basic [geOrchestra](http://www.georchestra.org) SDI instance with GeoFence.
 
+There are two branches:
+ * ```master``` is for a regular geOrchestra setup with GeoServer security,
+ * ```geofence``` installs the GeoFence webapp and a modified version of GeoServer which includes the GeoFence probe.  
+
 The goal is to setup a dev or demo server, but this is **NOT** for production use.  
 If you need a [provisioning](https://docs.vagrantup.com/v2/provisioning/ansible.html) tool, have a look at this contributed [geOrchestra ansible playbook](https://github.com/landryb/georchestra-ansible).
+
+The webapps are pulled from our [continuous integration](https://sdi.georchestra.org/ci/), which builds the complete stack every night from the master branch.  
+You've been warned: it might not work at all !
 
 ## pre-requisites
 
@@ -26,6 +33,7 @@ Create the directories on the host for the tmp and data volumes:
 ```
 mkdir -p ~/docker/tmp ~/docker/data && chmod -R a+rw ~/docker/*
 ```
+The ```~/docker/data``` folder is mounted on ```/data``` in the GeoServer container. Copy some of your geodata inside !
 
 Clone the repository:
 ```

@@ -29,6 +29,9 @@ RUN mkdir -p /var/lib/tomcat7/webapps/extractorapp && \
 # replace the webapp's own ws-servlet.xml in order to link with the database
 COPY ws-servlet.xml /var/lib/tomcat7/webapps/extractorapp/WEB-INF/
 
+# activate downloadform:
+RUN sed -i 's/DOWNLOAD_FORM: false/DOWNLOAD_FORM: true/' /var/lib/tomcat7/webapps/extractorapp/app/js/GEOR_custom.js
+
 # TODO: we will need a smtp service 
 
 COPY truststore /etc/tomcat7/
