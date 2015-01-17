@@ -17,7 +17,8 @@ RUN apt-get update && \
 
 RUN rm -rf /var/lib/tomcat7/webapps/*
 
-# TODO: native libs !
+# native libs
+RUN apt-get install -y libgdal1h libgdal-java
 
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/mapfishapp/target/mapfishapp-template.war /var/lib/tomcat7/webapps/mapfishapp.war
 
@@ -30,6 +31,10 @@ COPY ws-servlet.xml /var/lib/tomcat7/webapps/mapfishapp/WEB-INF/
 
 COPY truststore /etc/tomcat7/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat7
+
+# GDAL java bindings
+RUN rm -rf /var/lib/tomcat7/webapps/mapfishapp/WEB-INF/lib/imageio-ext-gdalframework-1.1.7.jar
+RUN cp /usr/share/java/gdal.jar /var/lib/tomcat7/webapps/mapfishapp/WEB-INF/lib/gdal.jar
 
 # Expose the port where tomcat is listening
 EXPOSE 8280
