@@ -100,15 +100,15 @@ extractorapp:
     #~ volumes:
         #~ - ~/docker/tmp:/tmp
 
-#~ downloadform:
-    #~ build: ./downloadform
-    #~ privileged: true
-    #~ ports:
-        #~ - "8285"
-    #~ links:
-        #~ - database:postgresql_host
-    #~ volumes:
-        #~ - ~/docker/tmp:/tmp
+downloadform:
+    build: ./downloadform
+    privileged: true
+    ports:
+        - "8285"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/tmp:/tmp
 
 analytics:
     build: ./analytics
