@@ -36,7 +36,7 @@ proxycas:
         - analytics:analytics_host
         - ldapadmin:ldapadmin_host
         #~ - catalogapp:catalogapp_host
-        #~ - downloadform:downloadform_host
+        - downloadform:downloadform_host
         - geonetwork:geonetwork_host
         - extractorapp:extractorapp_host
         - geoserver:geoserver_host
