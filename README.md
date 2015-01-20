@@ -9,8 +9,7 @@ There are two branches:
 The goal is to setup a dev or demo server, but this is **NOT** for production use.  
 If you need a [provisioning](https://docs.vagrantup.com/v2/provisioning/ansible.html) tool, have a look at this contributed [geOrchestra ansible playbook](https://github.com/landryb/georchestra-ansible).
 
-The webapps are pulled from our [continuous integration](https://sdi.georchestra.org/ci/), which builds the complete stack every night from the master branch.  
-You've been warned: it might not work at all !
+The webapps are pulled from our [continuous integration](https://sdi.georchestra.org/ci/), which builds the complete stack every night from the master branch. You've been warned: it might not work at all !
 
 ## pre-requisites
 
