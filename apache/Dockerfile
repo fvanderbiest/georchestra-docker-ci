@@ -11,11 +11,10 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN apt-get update && \
-    apt-get install -y apache2 ca-certificates sed
+    apt-get install -y apache2 ca-certificates
 
 # Enable apache mods.
-RUN a2enmod proxy_connect proxy proxy_http ssl rewrite headers
-# TODO: check proxy_connect is required
+RUN a2enmod proxy proxy_http ssl rewrite headers
 # TODO: check the use of deflate
 
 # Copy modules configuration files
