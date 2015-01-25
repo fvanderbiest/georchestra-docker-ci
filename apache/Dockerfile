@@ -14,8 +14,7 @@ RUN apt-get update && \
     apt-get install -y apache2 ca-certificates
 
 # Enable apache mods.
-RUN a2enmod proxy proxy_http ssl rewrite headers
-# TODO: check the use of deflate
+RUN a2enmod proxy proxy_http ssl rewrite headers deflate
 
 # Copy modules configuration files
 ADD georchestra-site /var/www/georchestra/
