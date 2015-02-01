@@ -39,6 +39,10 @@ RUN apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin
 ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 RUN dpkg -i /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 
+# marlin renderer
+ADD https://github.com/bourgesl/marlin-renderer/releases/download/v0.4.5/marlin-0.4.5.jar /usr/share/java/marlin.jar
+RUN chown -R tomcat7 /usr/share/java/marlin.jar
+
 # add the geoserver data dir submodule as a submodule
 RUN mkdir /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
 COPY geoserver_minimal_datadir /opt/geoserver_data_dir
@@ -59,6 +63,8 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -server -Djava.awt.headless=true -XX:+UsePar
 # turboJPEG:
 # gdal jni:
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/usr/lib/jni:/opt/libjpeg-turbo/lib64/\"" >> /etc/default/tomcat7
+# Marlin renderer:
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Xbootclasspath/a:\"/usr/share/java/marlin.jar\" -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine \"" >> /etc/default/tomcat7
 
 ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
 
