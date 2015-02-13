@@ -52,7 +52,7 @@ sudo sed -i '/vm-georchestra/d' /etc/hosts && \
 sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
 ```
 
-Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !
+Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !  
 Login with ```testadmin``` / ```testadmin```.
 
 Once you're done with it, you can stop the containers with CTRL + C
