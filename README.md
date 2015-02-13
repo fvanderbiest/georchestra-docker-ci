@@ -53,8 +53,9 @@ sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_
 ```
 
 Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !
+Login with ```testadmin``` / ```testadmin```.
 
-Note that you can stop the containers with CTRL + C
+Once you're done with it, you can stop the containers with CTRL + C
 
 ## customizing the images
 
