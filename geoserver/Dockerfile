@@ -66,7 +66,16 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/usr/lib/jni:/opt/libjpe
 # Marlin renderer:
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Xbootclasspath/a:\"/usr/share/java/marlin.jar\" -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine \"" >> /etc/default/tomcat7
 
-ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
+
+ADD resources /tmp/resources
+
+# A little logic that will fetch the geoserver zip file if it
+# is not available locally in the resources dir
+# This is a convenient way to use a "debug" or "testing" artifact.
+RUN if [ ! -f /tmp/resources/geoserver.war ]; then \
+    wget -c https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war -O /tmp/resources/geoserver.war; \
+    fi; \
+    mv /tmp/resources/geoserver.war /var/lib/tomcat7/webapps/geoserver.war
 
 RUN mkdir -p /var/lib/tomcat7/webapps/geoserver && \
     unzip -e /var/lib/tomcat7/webapps/geoserver.war -d /var/lib/tomcat7/webapps/geoserver && \
