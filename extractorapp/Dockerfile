@@ -43,7 +43,6 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dorg.geotools.referencing.forceXY=true -Dex
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.util.prefs.userRoot=/tmp -Djava.util.prefs.systemRoot=/tmp \"" >> /etc/default/tomcat6
 
 # GDAL java bindings
-RUN rm -rf /var/lib/tomcat7/webapps/extractorapp/WEB-INF/lib/imageio-ext-gdalframework-1.1.7.jar
 RUN cp /usr/share/java/gdal.jar /var/lib/tomcat7/webapps/extractorapp/WEB-INF/lib/gdal.jar
 
 # Expose the port where tomcat is listening
