@@ -52,7 +52,8 @@ RUN chown -R tomcat7 /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
 COPY truststore /etc/tomcat7/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat7
 # data dirs:
-RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -DGEOSERVER_DATA_DIR=/opt/geoserver_data_dir -DGEOWEBCACHE_CACHE_DIR=/var/cache/geowebcache_cache_dir \"" >> /etc/default/tomcat7
+#RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -DGEOSERVER_DATA_DIR=/opt/geoserver_data_dir -DGEOWEBCACHE_CACHE_DIR=/var/cache/geowebcache_cache_dir \"" >> /etc/default/tomcat7
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -DGEOWEBCACHE_CACHE_DIR=/var/cache/geowebcache_cache_dir \"" >> /etc/default/tomcat7
 # UTF-8
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dfile.encoding=UTF8 -Djavax.servlet.request.encoding=UTF-8 -Djavax.servlet.response.encoding=UTF-8 \"" >> /etc/default/tomcat7
 # RAM:
@@ -84,6 +85,15 @@ RUN mkdir -p /var/lib/tomcat7/webapps/geoserver && \
 # GDAL java bindings
 RUN rm -rf /var/lib/tomcat7/webapps/geoserver/WEB-INF/lib/imageio-ext-gdal-bindings-1.9.2.jar
 RUN cp /usr/share/java/gdal.jar /var/lib/tomcat7/webapps/geoserver/WEB-INF/lib/gdal.jar
+
+# modify geoserver internals to match our proxy needs:
+# see https://github.com/georchestra/georchestra/issues/920
+COPY applicationSecurityContext.xml /var/lib/tomcat7/webapps/geoserver/WEB-INF/
+RUN sed -i 's/classpath\*:\/applicationSecurityContext/WEB-INF\/applicationSecurityContext/' /var/lib/tomcat7/webapps/geoserver/WEB-INF/web.xml
+COPY geoserver_data_security_config.xml /var/lib/tomcat7/webapps/geoserver/data/security/config.xml
+RUN mkdir -p /var/lib/tomcat7/webapps/geoserver/data/security/filter/georchestra/
+COPY geoserver_data_security_filter_georchestra_config.xml /var/lib/tomcat7/webapps/geoserver/data/security/filter/georchestra/config.xml
+RUN chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/geoserver
 
 # Expose the port where tomcat is listening
 RUN sed -i 's/8080/8380/' /var/lib/tomcat7/conf/server.xml

@@ -1,0 +1,8 @@
+<requestHeaderAuthentication>
+  <id>52857278:13c7ffd66a8:-7ffe</id>
+  <name>georchestra</name>
+  <className>org.geoserver.security.filter.GeoServerRequestHeaderAuthenticationFilter</className>
+  <roleSource class="org.geoserver.security.config.PreAuthenticatedUserNameFilterConfig$PreAuthenticatedUserNameRoleSource">Header</roleSource>
+  <rolesHeaderAttribute>sec-roles</rolesHeaderAttribute>
+  <principalHeaderAttribute>sec-username</principalHeaderAttribute>
+</requestHeaderAuthentication>
