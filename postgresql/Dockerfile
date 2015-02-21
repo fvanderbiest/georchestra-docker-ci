@@ -14,11 +14,11 @@ RUN apt-get update && \
     apt-get install -y postgresql-9.4-postgis-2.1
 
 # Fetch the SQL code
-ADD https://raw.github.com/georchestra/georchestra/master/mapfishapp/database.sql /tmp/mapfishapp.sql
-ADD https://raw.github.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
-ADD https://raw.github.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
-ADD https://raw.github.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
-ADD https://raw.github.com/georchestra/geofence/georchestra-14.12/doc/setup/sql/002_create_schema_postgres.sql /tmp/geofence.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/mapfishapp/database.sql /tmp/mapfishapp.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
+ADD https://raw.githubusercontent.com/georchestra/geofence/georchestra-14.12/doc/setup/sql/002_create_schema_postgres.sql /tmp/geofence.sql
 RUN chmod a+r /tmp/*.sql
 
 # Run the rest of the commands as the ``postgres`` user
@@ -47,6 +47,9 @@ RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.co
 
 # And add ``listen_addresses``
 RUN echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf
+
+# Better query performance with:
+RUN sed -i 's/shared_buffers = 128MB/shared_buffers = 1024MB/' /etc/postgresql/9.4/main/postgresql.conf
 
 # Expose the PostgreSQL port
 EXPOSE 5432

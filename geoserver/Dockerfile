@@ -36,8 +36,12 @@ RUN ln -s /usr/share/java/clibwrapper_jiio.jar /usr/share/tomcat7/lib/clibwrappe
 RUN apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin
 
 # turbojpeg
-ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
+ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb?use_mirror=tenet /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 RUN dpkg -i /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
+
+# marlin renderer
+ADD https://github.com/bourgesl/marlin-renderer/releases/download/v0.4.5/marlin-0.4.5.jar /usr/share/java/marlin.jar
+RUN chown -R tomcat7 /usr/share/java/marlin.jar
 
 # add the geoserver data dir submodule as a submodule
 RUN mkdir /opt/geoserver_data_dir /var/cache/geowebcache_cache_dir
@@ -59,8 +63,19 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -server -Djava.awt.headless=true -XX:+UsePar
 # turboJPEG:
 # gdal jni:
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.library.path=/usr/lib/jni:/opt/libjpeg-turbo/lib64/\"" >> /etc/default/tomcat7
+# Marlin renderer:
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Xbootclasspath/a:\"/usr/share/java/marlin.jar\" -Dsun.java2d.renderer=org.marlin.pisces.PiscesRenderingEngine \"" >> /etc/default/tomcat7
 
-ADD https://sdi.georchestra.org/ci/job/georchestra-template-geofence/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war /var/lib/tomcat7/webapps/geoserver.war
+
+ADD resources /tmp/resources
+
+# A little logic that will fetch the geoserver zip file if it
+# is not available locally in the resources dir
+# This is a convenient way to use a "debug" or "testing" artifact.
+RUN if [ ! -f /tmp/resources/geoserver.war ]; then \
+    wget -c https://sdi.georchestra.org/ci/job/georchestra-template-geofence/lastSuccessfulBuild/artifact/geoserver/webapp/target/geoserver-template.war -O /tmp/resources/geoserver.war; \
+    fi; \
+    mv /tmp/resources/geoserver.war /var/lib/tomcat7/webapps/geoserver.war
 
 RUN mkdir -p /var/lib/tomcat7/webapps/geoserver && \
     unzip -e /var/lib/tomcat7/webapps/geoserver.war -d /var/lib/tomcat7/webapps/geoserver && \

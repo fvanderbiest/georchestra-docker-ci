@@ -39,8 +39,10 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/trus
 
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dorg.geotools.referencing.forceXY=true -Dextractor.storage.dir=/tmp/ \"" >> /etc/default/tomcat7
 
+# workaround for https://github.com/georchestra/georchestra/issues/871
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djava.util.prefs.userRoot=/tmp -Djava.util.prefs.systemRoot=/tmp \"" >> /etc/default/tomcat7
+
 # GDAL java bindings
-RUN rm -rf /var/lib/tomcat7/webapps/extractorapp/WEB-INF/lib/imageio-ext-gdalframework-1.1.7.jar
 RUN cp /usr/share/java/gdal.jar /var/lib/tomcat7/webapps/extractorapp/WEB-INF/lib/gdal.jar
 
 # Expose the port where tomcat is listening

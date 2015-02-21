@@ -9,8 +9,7 @@ There are two branches:
 The goal is to setup a dev or demo server, but this is **NOT** for production use.  
 If you need a [provisioning](https://docs.vagrantup.com/v2/provisioning/ansible.html) tool, have a look at this contributed [geOrchestra ansible playbook](https://github.com/landryb/georchestra-ansible).
 
-The webapps are pulled from our [continuous integration](https://sdi.georchestra.org/ci/), which builds the complete stack every night from the master branch.  
-You've been warned: it might not work at all !
+The webapps are pulled from our [continuous integration](https://sdi.georchestra.org/ci/), which builds the complete stack every night from the master branch. You've been warned: it might not work at all !
 
 ## pre-requisites
 
@@ -53,9 +52,10 @@ sudo sed -i '/vm-georchestra/d' /etc/hosts && \
 sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
 ```
 
-Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !
+Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !  
+Login with ```testadmin``` / ```testadmin```.
 
-Note that you can stop the containers with CTRL + C
+Once you're done with it, you can stop the containers with CTRL + C
 
 ## customizing the images
 
