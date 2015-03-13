@@ -44,7 +44,7 @@
         <property name="connectionPool" ref="pgpool"/>
         <property name="credentials">
             <map>
-                <entry key="vm-georchestra"> <!-- FIXME -->
+                <entry key="georchestra.mydomain.org"> <!-- FIXME -->
                     <bean class="org.apache.commons.httpclient.UsernamePasswordCredentials">
                         <constructor-arg index="0" value="geoserver_privileged_user:gerlsSnFd6SmM" />
                     </bean>

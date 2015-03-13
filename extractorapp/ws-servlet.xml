@@ -32,9 +32,9 @@
         <property name="responseTemplateFile" 
                   value="/WEB-INF/templates/extractor-http-response-template.xml"/>
         <property name="servletUrl" 
-                  value="http://vm-georchestra:80/extractorapp"/>
+                  value="http://georchestra.mydomain.org:80/extractorapp"/>
         <property name="secureHost" 
-                  value="vm-georchestra"/>
+                  value="georchestra.mydomain.org"/>
         <property name="emailFactory" 
                   ref="emailFactory"/>
         <property name="reponseMimeType" 
