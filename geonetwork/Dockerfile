@@ -6,7 +6,7 @@
 # run this one with --privileged to overcome https://github.com/docker/docker/issues/6800
 # (docker run -it --cap-add SYS_PTRACE does not fix it)
 
-FROM debian:jessie
+FROM debian:wheezy
 
 MAINTAINER PSC "psc@georchestra.org"
 

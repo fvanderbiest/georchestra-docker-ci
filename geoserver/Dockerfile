@@ -36,7 +36,7 @@ RUN ln -s /usr/share/java/clibwrapper_jiio.jar /usr/share/tomcat7/lib/clibwrappe
 RUN apt-get install -y ttf-mscorefonts-installer libgdal1h libgdal-java gdal-bin
 
 # turbojpeg
-ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
+ADD http://downloads.sourceforge.net/project/libjpeg-turbo/1.4.0/libjpeg-turbo-official_1.4.0_amd64.deb?use_mirror=tenet /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 RUN dpkg -i /tmp/libjpeg-turbo-official_1.4.0_amd64.deb
 
 # marlin renderer

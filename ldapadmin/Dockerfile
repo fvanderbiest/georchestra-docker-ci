@@ -45,4 +45,3 @@ RUN touch /tmp/ldapadmin.log && \
 # command (the tail command); thus, the Docker container will keep running.
 #~ CMD /etc/init.d/tomcat7 start && tail -F /var/log/tomcat7/catalina.out
 CMD /etc/init.d/tomcat7 start && tail -F /tmp/ldapadmin.log
-

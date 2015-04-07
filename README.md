@@ -48,11 +48,11 @@ cd ~/docker_georchestra && fig up
 
 Register the IP of the front server in your host machine with this one-liner:
 ```
-sudo sed -i '/vm-georchestra/d' /etc/hosts && \
-sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` vm-georchestra >> /etc/hosts"
+sudo sed -i '/georchestra.mydomain.org/d' /etc/hosts && \
+sudo sh -c "echo `docker inspect --format {{.NetworkSettings.IPAddress}} docker_apache_1` georchestra.mydomain.org >> /etc/hosts"
 ```
 
-Open [http://vm-georchestra/header/](http://vm-georchestra/header/) in your browser and voila !  
+Open [http://georchestra.mydomain.org/header/](http://georchestra.mydomain.org/header/) in your browser and voila !  
 Login with ```testadmin``` / ```testadmin```.
 
 Once you're done with it, you can stop the containers with CTRL + C

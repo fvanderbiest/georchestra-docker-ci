@@ -24,7 +24,7 @@ ADD apache-config.conf /etc/apache2/sites-enabled/georchestra.conf
 
 RUN a2dissite 000-default default-ssl
 
-RUN echo "127.0.0.1       vm-georchestra" >> /etc/hosts
+RUN echo "127.0.0.1       georchestra.mydomain.org" >> /etc/hosts
 
 # Expose the web ports
 EXPOSE 80 443

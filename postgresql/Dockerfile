@@ -14,10 +14,10 @@ RUN apt-get update && \
     apt-get install -y postgresql-9.4-postgis-2.1
 
 # Fetch the SQL code
-ADD https://raw.github.com/georchestra/georchestra/master/mapfishapp/database.sql /tmp/mapfishapp.sql
-ADD https://raw.github.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
-ADD https://raw.github.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
-ADD https://raw.github.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/mapfishapp/database.sql /tmp/mapfishapp.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
 RUN chmod a+r /tmp/*.sql
 
 # Run the rest of the commands as the ``postgres`` user
