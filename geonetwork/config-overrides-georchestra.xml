@@ -27,9 +27,9 @@
         <postgis.min.idle>0</postgis.min.idle>
         <pg.jdbc.driver>org.postgresql.Driver</pg.jdbc.driver>
         <pg.jdbc.driver.url>postgresql</pg.jdbc.driver.url>
-        <wfs.host>vm-georchestra</wfs.host>
+        <wfs.host>georchestra.mydomain.org</wfs.host>
         <wfs.port>80</wfs.port>
-        <host>vm-georchestra</host>
+        <host>georchestra.mydomain.org</host>
         <port>80</port>
     </properties>
     <file name=".*/WEB-INF/config.xml">

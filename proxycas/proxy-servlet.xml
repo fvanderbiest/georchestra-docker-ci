@@ -67,7 +67,7 @@
              own referrer header
 
              Comment out property to use client referrer instead of this host -->
-        <property name="referer" value="http://vm-georchestra/"/>
+        <property name="referer" value="http://georchestra.mydomain.org/"/>
         <property name="headerProviders">
             <list>
                 <bean class="org.georchestra.security.SecurityRequestHeaderProvider"/>
