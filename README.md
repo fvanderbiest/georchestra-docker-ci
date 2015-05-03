@@ -1,6 +1,6 @@
-# docker + fig
+# docker
 
-This repository contains the [docker](https://www.docker.com/) and [fig](http://www.fig.sh/) configuration files required to build a basic [geOrchestra](http://www.georchestra.org) SDI instance with GeoFence.
+This repository contains the [docker](https://www.docker.com/) and [compose](https://docs.docker.com/compose/) configuration files required to build a basic [geOrchestra](http://www.georchestra.org) SDI instance with GeoFence.
 
 There are two branches:
  * ```master``` is for a regular geOrchestra setup with GeoServer security,
@@ -22,10 +22,12 @@ sudo apt-get update
 sudo apt-get install lxc-docker
 ```
 
-Install Fig:
+Install Compose:
 ```
-sudo apt-get install python-pip
-sudo pip install -U fig
+sudo -i
+curl -L https://github.com/docker/compose/releases/download/1.2.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+exit
 ```
 
 Create the directories on the host for the tmp and data volumes:
@@ -43,7 +45,7 @@ git clone -b geofence --recursive https://github.com/georchestra/docker.git ~/do
 
 Run the stack with:
 ```
-cd ~/docker_georchestra && fig up
+cd ~/docker_georchestra && docker-compose up
 ```
 
 Register the IP of the front server in your host machine with this one-liner:
@@ -59,9 +61,9 @@ Once you're done with it, you can stop the containers with CTRL + C
 
 ## customizing the images
 
-In case you make changes to the Dockerfiles, and before running again ```fig up```, remember you have to:
+In case you make changes to the Dockerfiles, and before running again ```docker-compose up```, remember you have to:
  - stop the containers with CTRL + C
- - remove the containers with ```fig rm```
+ - remove the containers with ```docker-compose rm```
  - remove the previous images with eg ```docker rmi -f docker_proxycas``` (in case you modified proxycas/Dockerfile)
 
 ## debugging
