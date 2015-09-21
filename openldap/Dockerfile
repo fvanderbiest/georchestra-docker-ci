@@ -18,6 +18,7 @@ RUN apt-get update && \
 
 RUN /etc/init.d/slapd start && \
     wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra-bootstrap.ldif | ldapadd -Y EXTERNAL -H ldapi:/// && \
+    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra-groupofmembers.ldif | ldapadd -Y EXTERNAL -H ldapi:/// && \
     wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra-root.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret && \
     wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret
 
