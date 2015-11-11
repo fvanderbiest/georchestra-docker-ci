@@ -13,37 +13,49 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN apt-get update && \
-    apt-get install -y tomcat7 unzip
+    apt-get install -y tomcat8 unzip wget
 
-RUN rm -rf /var/lib/tomcat7/webapps/*
+RUN echo "deb http://build.georchestra.org/debian jessie main" >> /etc/apt/sources.list
+RUN wget -O- http://build.georchestra.org/debian/build.georchestra.org.asc | apt-key add -
 
-ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/security-proxy/target/ROOT-template.war /var/lib/tomcat7/webapps/ROOT.war
-ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war /var/lib/tomcat7/webapps/cas.war
-ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war /var/lib/tomcat7/webapps/header-private.war
-RUN chmod a+r /var/lib/tomcat7/webapps/*.war
+RUN apt-get update && \
+    apt-get install -y georchestra-security-proxy georchestra-cas georchestra-header
 
-RUN mkdir -p /var/lib/tomcat7/webapps/ROOT && \
-    unzip -e /var/lib/tomcat7/webapps/ROOT.war -d /var/lib/tomcat7/webapps/ROOT && \
-    chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/ROOT
+RUN rm -rf /var/lib/tomcat8/webapps/*
 
-RUN mkdir -p /var/lib/tomcat7/webapps/cas && \
-    unzip -e /var/lib/tomcat7/webapps/cas.war -d /var/lib/tomcat7/webapps/cas && \
-    chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/cas
+RUN ln -s /usr/share/lib/georchestra-security-proxy/ROOT-generic.war /var/lib/tomcat8/webapps/ROOT.war
+RUN ln -s /usr/share/lib/georchestra-cas/cas-generic.war /var/lib/tomcat8/webapps/cas.war
+RUN ln -s /usr/share/lib/georchestra-header/header-generic.war /var/lib/tomcat8/webapps/header-private.war
+
+#ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/security-proxy/target/ROOT-template.war /var/lib/tomcat8/webapps/ROOT.war
+#ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war /var/lib/tomcat8/webapps/cas.war
+#ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war /var/lib/tomcat8/webapps/header-private.war
+#RUN chmod a+r /var/lib/tomcat8/webapps/*.war
+
+#RUN mkdir -p /var/lib/tomcat8/webapps/ROOT && \
+#    unzip -e /var/lib/tomcat8/webapps/ROOT.war -d /var/lib/tomcat8/webapps/ROOT && \
+#    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/ROOT
+
+#RUN mkdir -p /var/lib/tomcat8/webapps/cas && \
+#    unzip -e /var/lib/tomcat8/webapps/cas.war -d /var/lib/tomcat8/webapps/cas && \
+#    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/cas
 
 # replace the webapp's own proxy-servlet.xml & properties file in order to link with the database and other containers
-COPY proxy-servlet.xml /var/lib/tomcat7/webapps/ROOT/WEB-INF/
-COPY security-proxy.properties /var/lib/tomcat7/webapps/ROOT/WEB-INF/
-COPY log4j.properties /var/lib/tomcat7/webapps/ROOT/WEB-INF/classes/
+#COPY proxy-servlet.xml /var/lib/tomcat8/webapps/ROOT/WEB-INF/
+#COPY security-proxy.properties /var/lib/tomcat8/webapps/ROOT/WEB-INF/
+#COPY log4j.properties /var/lib/tomcat8/webapps/ROOT/WEB-INF/classes/
 # cas customization:
-COPY cas.properties /var/lib/tomcat7/webapps/cas/WEB-INF/
+#COPY cas.properties /var/lib/tomcat8/webapps/cas/WEB-INF/
 
 # the keystore is for the server (cas)
-COPY keystore /etc/tomcat7/
+COPY keystore /etc/tomcat8/
 # the trustStore is for the client (cas-client inside proxy)
-COPY truststore /etc/tomcat7/
+COPY truststore /etc/tomcat8/
 # see http://stackoverflow.com/questions/2200176/keytool-create-a-trusted-self-signed-certificate
 
-RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat7/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD -Xms256m -Xmx256m \"" >> /etc/default/tomcat7
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat8/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD -Xms256m -Xmx256m \"" >> /etc/default/tomcat8
+
+RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dgeorchestra.datadir=/etc/georchestra \"" >> /etc/default/tomcat8
 
 ## need proxycas host to know his name as relayed by apache
 # FIXME: does not work for some reason ...
@@ -53,17 +65,17 @@ ADD https://github.com/hiteshjasani/nim-mungehosts/releases/download/v0.1.1/mung
 RUN chmod 755 /usr/local/bin/mungehosts
 
 # configure connector on port 8443 for CAS ticket validation:
-COPY server.xml /var/lib/tomcat7/conf/
-
+#COPY server.xml /var/lib/tomcat8/conf/
 # Expose the port where tomcat is listening
-#RUN sed -i 's/8080/8180/' /var/lib/tomcat7/conf/server.xml
+RUN sed -i 's/8080/8180/' /var/lib/tomcat8/conf/server.xml
+# Expose the port where tomcat is listening
+#RUN sed -i 's/8080/8180/' /var/lib/tomcat8/conf/server.xml
 # line above is useless since the port has already been customized in server.xml
 EXPOSE 8180
 
-VOLUME ["/tmp"] # server logs
+VOLUME ["/tmp", "/etc/georchestra"] # server logs
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running
 # command (the tail command); thus, the Docker container will keep running.
-CMD mungehosts -l proxycas && /etc/init.d/tomcat7 start && tail -F /var/log/tomcat7/catalina.out
-
+CMD mungehosts -l proxycas && /etc/init.d/tomcat8 start && tail -F /var/log/tomcat8/catalina.out

@@ -32,9 +32,14 @@ exit
 
 Create the directories on the host for the tmp and data volumes:
 ```
-mkdir -p ~/docker/tmp ~/docker/data && chmod -R a+rw ~/docker/*
+mkdir -p ~/docker/tmp ~/docker/data ~/docker/datadir && chmod -R a+rw ~/docker/*
 ```
 The ```~/docker/data``` folder is mounted on ```/data``` in the GeoServer container. Copy some of your geodata inside !
+
+Populate the geOrchestra config dir:
+```
+cd ~/docker && git clone -b docker https://github.com/georchestra/config.git datadir
+```
 
 Clone the repository:
 ```
@@ -84,4 +89,3 @@ For the network:
 sudo tcpdump -X -i docker0 tcp port XXXX
 ```
 ... where XXXX might be 8180, 8280, 8281, 8282, 8380, etc... depending on which webapp you have to debug.
-
