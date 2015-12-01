@@ -12,16 +12,15 @@ MAINTAINER PSC "psc@georchestra.org"
 
 ENV DEBIAN_FRONTEND noninterative
 
-RUN apt-get update && \
-    apt-get install -y tomcat8 unzip wget
-
 RUN echo "deb http://build.georchestra.org/debian jessie main" >> /etc/apt/sources.list
 RUN wget -O- http://build.georchestra.org/debian/build.georchestra.org.asc | apt-key add -
 
 RUN apt-get update && \
-    apt-get install -y georchestra-security-proxy georchestra-cas georchestra-header
+    apt-get install -y tomcat8
 
 RUN rm -rf /var/lib/tomcat8/webapps/*
+
+RUN apt-get install -y georchestra-security-proxy georchestra-cas georchestra-header
 
 RUN ln -s /usr/share/lib/georchestra-security-proxy/ROOT-generic.war /var/lib/tomcat8/webapps/ROOT.war
 RUN ln -s /usr/share/lib/georchestra-cas/cas-generic.war /var/lib/tomcat8/webapps/cas.war
