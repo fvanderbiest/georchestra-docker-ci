@@ -32,7 +32,7 @@ proxycas:
     links:
         - database:postgresql_host
         - ldap:ldap_host
-        #~ - mapfishapp:mapfishapp_host
+        - mapfishapp:mapfishapp_host
         #~ - analytics:analytics_host
         #~ - ldapadmin:ldapadmin_host
         #~ - catalogapp:catalogapp_host
@@ -45,15 +45,15 @@ proxycas:
         - ~/docker/tmp:/tmp
         - ~/docker/datadir:/etc/georchestra
 
-#~ mapfishapp:
-    #~ build: ./mapfishapp
-    #~ privileged: true
-    #~ ports:
-        #~ - "8280"
-    #~ links:
-        #~ - database:postgresql_host
-    #~ volumes:
-        #~ - ~/docker/tmp:/tmp
+mapfishapp:
+    build: ./mapfishapp
+    privileged: true
+    ports:
+        - "8280"
+    links:
+        - database:postgresql_host
+    volumes:
+        - ~/docker/tmp:/tmp
 
 geoserver:
     build: ./geoserver

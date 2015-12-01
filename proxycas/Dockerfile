@@ -13,7 +13,8 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN echo "deb http://build.georchestra.org/debian jessie main" >> /etc/apt/sources.list
-RUN wget -O- http://build.georchestra.org/debian/build.georchestra.org.asc | apt-key add -
+ADD http://build.georchestra.org/debian/build.georchestra.org.asc /tmp/build.georchestra.org.asc
+RUN apt-key add /tmp/build.georchestra.org.asc
 
 RUN apt-get update && \
     apt-get install -y tomcat8
