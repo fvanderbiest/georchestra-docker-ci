@@ -39,7 +39,7 @@ RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Dgeorchestra.datadir=/etc/georchestra \"" >
 # Expose the port where tomcat is listening
 EXPOSE 8280
 
-VOLUME ["/tmp"] # server logs
+VOLUME ["/tmp", "/etc/georchestra"] # server logs
 
 RUN sed -i 's/8080/8280/' /var/lib/tomcat8/conf/server.xml
 

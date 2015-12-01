@@ -54,6 +54,7 @@ mapfishapp:
         - database:postgresql_host
     volumes:
         - ~/docker/tmp:/tmp
+        - ~/docker/datadir:/etc/georchestra
 
 geoserver:
     build: ./geoserver
