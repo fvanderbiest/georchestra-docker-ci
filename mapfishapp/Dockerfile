@@ -13,7 +13,9 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN echo "deb http://build.georchestra.org/debian jessie main" >> /etc/apt/sources.list
-ADD http://build.georchestra.org/debian/build.georchestra.org.asc /tmp/build.georchestra.org.asc
+# cannot use the following because of a bug in docker 1.9:
+#ADD http://build.georchestra.org/debian/build.georchestra.org.asc /tmp/build.georchestra.org.asc
+ADD build.georchestra.org.asc /tmp/build.georchestra.org.asc
 RUN apt-key add /tmp/build.georchestra.org.asc
 
 RUN apt-get update && \
