@@ -13,28 +13,31 @@ The webapps are pulled from our [continuous integration](https://sdi.georchestra
 
 ## pre-requisites
 
-Install a recent Docker version:
+Install a recent docker-engine: read https://blog.docker.com/2015/07/new-apt-and-yum-repos/ and:
 ```
 sudo apt-get remove --purge docker.io
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
-sudo sh -c "echo deb https://get.docker.com/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
-sudo apt-get update
-sudo apt-get install lxc-docker
+sudo apt-get remove --purge lxc-docker
+sudo apt-get install docker-engine
 ```
 
 Install Compose:
 ```
 sudo -i
-curl -L https://github.com/docker/compose/releases/download/1.3.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.5.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 exit
 ```
 
 Create the directories on the host for the tmp and data volumes:
 ```
-mkdir -p ~/docker/tmp ~/docker/data && chmod -R a+rw ~/docker/*
+mkdir -p ~/docker/tmp ~/docker/data ~/docker/datadir && chmod -R a+rw ~/docker/*
 ```
 The ```~/docker/data``` folder is mounted on ```/data``` in the GeoServer container. Copy some of your geodata inside !
+
+Populate the geOrchestra config dir:
+```
+cd ~/docker && git clone -b docker https://github.com/georchestra/config.git datadir
+```
 
 Clone the repository:
 ```
@@ -84,4 +87,3 @@ For the network:
 sudo tcpdump -X -i docker0 tcp port XXXX
 ```
 ... where XXXX might be 8180, 8280, 8281, 8282, 8380, etc... depending on which webapp you have to debug.
-

@@ -11,13 +11,18 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN apt-get update && \
-    apt-get install -y postgresql-9.4-postgis-2.1
+    apt-get install -y postgresql-9.4-postgis-2.1 wget
 
 # Fetch the SQL code
-ADD https://raw.githubusercontent.com/georchestra/georchestra/master/mapfishapp/database.sql /tmp/mapfishapp.sql
-ADD https://raw.githubusercontent.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
-ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
-ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
+# https://github.com/docker/compose/issues/1065
+#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/mapfishapp/database.sql /tmp/mapfishapp.sql
+#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
+#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
+#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
+RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/mapfishapp/database.sql -O /tmp/mapfishapp.sql
+RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/downloadform/database.sql -O /tmp/downloadform.sql
+RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/ldapadmin/database.sql -O /tmp/ldapadmin.sql
+RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/ogc-server-statistics/database.sql -O /tmp/ogcstatistics.sql
 RUN chmod a+r /tmp/*.sql
 
 # Run the rest of the commands as the ``postgres`` user
@@ -37,7 +42,7 @@ RUN /etc/init.d/postgresql start && \
 # FIXME: no superuser here
 
 # Adjust PostgreSQL configuration so that remote connections to the
-# database are possible. 
+# database are possible.
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf
 
 # And add ``listen_addresses``

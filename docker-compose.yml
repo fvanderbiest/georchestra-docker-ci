@@ -33,16 +33,17 @@ proxycas:
         - database:postgresql_host
         - ldap:ldap_host
         - mapfishapp:mapfishapp_host
-        - analytics:analytics_host
-        - ldapadmin:ldapadmin_host
+        #~ - analytics:analytics_host
+        #~ - ldapadmin:ldapadmin_host
         #~ - catalogapp:catalogapp_host
-        - downloadform:downloadform_host
-        - geonetwork:geonetwork_host
-        - extractorapp:extractorapp_host
+        #~ - downloadform:downloadform_host
+        #~ - geonetwork:geonetwork_host
+        #~ - extractorapp:extractorapp_host
         - geoserver:geoserver_host
         #~ - geowebcache:geowebcache_host
     volumes:
         - ~/docker/tmp:/tmp
+        - ~/docker/datadir:/etc/georchestra
 
 mapfishapp:
     build: ./mapfishapp
@@ -53,6 +54,7 @@ mapfishapp:
         - database:postgresql_host
     volumes:
         - ~/docker/tmp:/tmp
+        - ~/docker/datadir:/etc/georchestra
 
 geoserver:
     build: ./geoserver
@@ -62,17 +64,18 @@ geoserver:
     volumes:
         - ~/docker/tmp:/tmp
         - ~/docker/data:/data
+        - ~/docker/datadir:/etc/georchestra
         
-ldapadmin:
-    build: ./ldapadmin
-    privileged: true
-    ports:
-        - "8281"
-    links:
-        - ldap:ldap_host
-        - database:postgresql_host
-    volumes:
-        - ~/docker/tmp:/tmp
+#~ ldapadmin:
+    #~ build: ./ldapadmin
+    #~ privileged: true
+    #~ ports:
+        #~ - "8281"
+    #~ links:
+        #~ - ldap:ldap_host
+        #~ - database:postgresql_host
+    #~ volumes:
+        #~ - ~/docker/tmp:/tmp
 
 #~ catalogapp:
     #~ build: ./catalogapp
@@ -82,15 +85,15 @@ ldapadmin:
     #~ volumes:
         #~ - ~/docker/tmp:/tmp
 
-extractorapp:
-    build: ./extractorapp
-    privileged: true
-    ports:
-        - "8283"
-    links:
-        - database:postgresql_host
-    volumes:
-        - ~/docker/tmp:/tmp
+#~ extractorapp:
+    #~ build: ./extractorapp
+    #~ privileged: true
+    #~ ports:
+        #~ - "8283"
+    #~ links:
+        #~ - database:postgresql_host
+    #~ volumes:
+        #~ - ~/docker/tmp:/tmp
 
 #~ geowebcache:
     #~ build: ./geowebcache
@@ -100,33 +103,33 @@ extractorapp:
     #~ volumes:
         #~ - ~/docker/tmp:/tmp
 
-downloadform:
-    build: ./downloadform
-    privileged: true
-    ports:
-        - "8285"
-    links:
-        - database:postgresql_host
-    volumes:
-        - ~/docker/tmp:/tmp
+#~ downloadform:
+    #~ build: ./downloadform
+    #~ privileged: true
+    #~ ports:
+        #~ - "8285"
+    #~ links:
+        #~ - database:postgresql_host
+    #~ volumes:
+        #~ - ~/docker/tmp:/tmp
 
-analytics:
-    build: ./analytics
-    privileged: true
-    ports:
-        - "8286"
-    links:
-        - database:postgresql_host
-    volumes:
-        - ~/docker/tmp:/tmp
+#~ analytics:
+    #~ build: ./analytics
+    #~ privileged: true
+    #~ ports:
+        #~ - "8286"
+    #~ links:
+        #~ - database:postgresql_host
+    #~ volumes:
+        #~ - ~/docker/tmp:/tmp
         
-geonetwork:
-    build: ./geonetwork
-    privileged: true
-    ports:
-        - "8287"
-    links:
-        - database:postgresql_host
-        - ldap:ldap_host
-    volumes:
-        - ~/docker/tmp:/tmp
+#~ geonetwork:
+    #~ build: ./geonetwork
+    #~ privileged: true
+    #~ ports:
+        #~ - "8287"
+    #~ links:
+        #~ - database:postgresql_host
+        #~ - ldap:ldap_host
+    #~ volumes:
+        #~ - ~/docker/tmp:/tmp
