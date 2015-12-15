@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.georchestra</groupId>
+  <artifactId>docker</artifactId>
+  <packaging>pom</packaging>
+  <version>master</version>
+  <name>Docker image builder for the geOrchestra SDI</name>
+  <url>http://maven.apache.org</url>
+  <organization>
+    <name>geOrchestra</name>
+  </organization>
+  <modules>
+    <!--
+    <module>analytics</module>
+    <module>apache</module>
+    <module>catalogapp</module>
+    <module>downloadform</module>
+    <module>extractorapp</module>
+    <module>geonetwork</module>
+    <module>geoserver</module>
+    <module>geowebcache</module>
+    <module>ldapadmin</module>
+    -->
+    <module>mapfishapp</module>
+    <!--
+    <module>openldap</module>
+    <module>postgresql</module>
+    <module>proxycas</module>
+    -->
+  </modules>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>true</enabled>
+        <checksumPolicy>ignore</checksumPolicy>
+      </snapshots>
+      <id>sonatype</id>
+      <url>https://oss.sonatype.org/content/repositories/public</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>
+
