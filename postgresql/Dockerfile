@@ -29,6 +29,7 @@ RUN /etc/init.d/postgresql start && \
     psql -c "CREATE USER georchestra WITH SUPERUSER PASSWORD 'georchestra';" && \
     psql -c "CREATE USER geonetwork WITH SUPERUSER PASSWORD 'georchestra';" && \
     createdb -O georchestra georchestra && \
+    psql -c "CREATE EXTENSION postgis;" -d georchestra && \
     psql -d georchestra -f /tmp/mapfishapp.sql && \
     psql -d georchestra -f /tmp/downloadform.sql && \
     psql -d georchestra -f /tmp/ldapadmin.sql && \
