@@ -17,10 +17,10 @@ RUN apt-get update && \
 # Hint: environment variables
 
 RUN /etc/init.d/slapd start && \
-    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra-bootstrap.ldif | ldapadd -Y EXTERNAL -H ldapi:/// && \
-    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra-groupofmembers.ldif | ldapadd -Y EXTERNAL -H ldapi:/// && \
-    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra-root.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret && \
-    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/LDAP/master/georchestra.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret
+    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/georchestra/15.12/ldap/bootstrap.ldif | ldapadd -Y EXTERNAL -H ldapi:/// && \
+    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/georchestra/15.12/ldap/groupofmembers.ldif | ldapadd -Y EXTERNAL -H ldapi:/// && \
+    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/georchestra/15.12/ldap/root.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret && \
+    wget --no-check-certificate -O - https://raw.githubusercontent.com/georchestra/georchestra/15.12/ldap/georchestra.ldif | ldapadd -D"cn=admin,dc=georchestra,dc=org" -w secret
 
 # Expose the ldap port
 EXPOSE 389

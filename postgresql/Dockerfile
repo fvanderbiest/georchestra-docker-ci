@@ -11,18 +11,14 @@ MAINTAINER PSC "psc@georchestra.org"
 ENV DEBIAN_FRONTEND noninterative
 
 RUN apt-get update && \
-    apt-get install -y postgresql-9.4-postgis-2.1 wget
+    apt-get install -y postgresql-9.4-postgis-2.1
 
 # Fetch the SQL code
-# https://github.com/docker/compose/issues/1065
-#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/mapfishapp/database.sql /tmp/mapfishapp.sql
-#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/downloadform/database.sql /tmp/downloadform.sql
-#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ldapadmin/database.sql /tmp/ldapadmin.sql
-#ADD https://raw.githubusercontent.com/georchestra/georchestra/master/ogc-server-statistics/database.sql /tmp/ogcstatistics.sql
-RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/mapfishapp/database.sql -O /tmp/mapfishapp.sql
-RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/downloadform/database.sql -O /tmp/downloadform.sql
-RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/ldapadmin/database.sql -O /tmp/ldapadmin.sql
-RUN wget --no-check-certificate https://raw.githubusercontent.com/georchestra/georchestra/master/ogc-server-statistics/database.sql -O /tmp/ogcstatistics.sql
+ADD https://raw.githubusercontent.com/georchestra/georchestra/15.12/postgresql/01-create-extension.sql /tmp
+ADD https://raw.githubusercontent.com/georchestra/georchestra/15.12/postgresql/02-mapfishapp.sql /tmp
+ADD https://raw.githubusercontent.com/georchestra/georchestra/15.12/postgresql/05-ogc-server-statistics.sql /tmp
+ADD https://raw.githubusercontent.com/georchestra/georchestra/15.12/postgresql/fix-owner.sql /tmp
+
 RUN chmod a+r /tmp/*.sql
 
 # Run the rest of the commands as the ``postgres`` user
@@ -32,13 +28,14 @@ USER postgres
 # then create a database ``georchestra`` owned by the ``georchestra`` role.
 RUN /etc/init.d/postgresql start && \
     psql -c "CREATE USER georchestra WITH SUPERUSER PASSWORD 'georchestra';" && \
-    psql -c "CREATE USER geonetwork WITH SUPERUSER PASSWORD 'georchestra';" && \
     createdb -O georchestra georchestra && \
-    psql -c "CREATE EXTENSION postgis;" -d georchestra && \
-    psql -d georchestra -f /tmp/mapfishapp.sql && \
-    psql -d georchestra -f /tmp/downloadform.sql && \
-    psql -d georchestra -f /tmp/ldapadmin.sql && \
-    psql -d georchestra -f /tmp/ogcstatistics.sql && \
+    psql -d georchestra -f /tmp/01-create-extension.sql && \
+    psql -d georchestra -f /tmp/02-mapfishapp.sql && \
+    psql -d georchestra -f /tmp/05-ogc-server-statistics.sql && \
+    psql -d georchestra -f /tmp/fix-owner.sql && \
+    psql -d georchestra -c "SELECT change_owner('mapfishapp', 'georchestra');" && \
+    psql -d georchestra -c "SELECT change_owner('ogcstatistics', 'georchestra');" && \
+    psql -d georchestra -c "SELECT change_owner('public', 'georchestra');" && \
     /etc/init.d/postgresql stop
 # FIXME: no superuser here
 

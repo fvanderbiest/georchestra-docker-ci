@@ -19,16 +19,25 @@ ADD build.georchestra.org.asc /tmp/build.georchestra.org.asc
 RUN apt-key add /tmp/build.georchestra.org.asc
 
 RUN apt-get update && \
-    apt-get install -y tomcat8
+    apt-get install -y tomcat8 unzip
 
 RUN rm -rf /var/lib/tomcat8/webapps/*
 
 # native libs
 RUN apt-get install -y libgdal1h libgdal-java
 
+# install datadir:
+ADD https://github.com/georchestra/datadir/archive/docker-15.12.zip /tmp/georchestra.zip
+RUN unzip /tmp/georchestra.zip -d /etc && mv /etc/datadir-docker-15.12 /etc/georchestra
+
 RUN apt-get install -y georchestra-mapfishapp
 
 RUN ln -s /usr/share/lib/georchestra-mapfishapp/mapfishapp-generic.war /var/lib/tomcat8/webapps/mapfishapp.war
+
+# unzip webapps to allow overrides via overlay
+RUN mkdir -p /var/lib/tomcat8/webapps/mapfishapp && \
+    unzip -e /var/lib/tomcat8/webapps/mapfishapp.war -d /var/lib/tomcat8/webapps/mapfishapp && \
+    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/mapfishapp
 
 COPY truststore /etc/tomcat8/
 RUN echo "JAVA_OPTS=\"\${JAVA_OPTS} -Djavax.net.ssl.trustStore=/etc/tomcat8/truststore -Djavax.net.ssl.trustStorePassword=STOREPASSWORD \"" >> /etc/default/tomcat8

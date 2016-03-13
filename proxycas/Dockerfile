@@ -17,9 +17,13 @@ ADD build.georchestra.org.asc /tmp/build.georchestra.org.asc
 RUN apt-key add /tmp/build.georchestra.org.asc
 
 RUN apt-get update && \
-    apt-get install -y tomcat8
+    apt-get install -y tomcat8 unzip
 
 RUN rm -rf /var/lib/tomcat8/webapps/*
+
+# install datadir:
+ADD https://github.com/georchestra/datadir/archive/docker-15.12.zip /tmp/georchestra.zip
+RUN unzip /tmp/georchestra.zip -d /etc && mv /etc/datadir-docker-15.12 /etc/georchestra
 
 RUN apt-get install -y georchestra-security-proxy georchestra-cas georchestra-header
 
@@ -27,25 +31,16 @@ RUN ln -s /usr/share/lib/georchestra-security-proxy/ROOT-generic.war /var/lib/to
 RUN ln -s /usr/share/lib/georchestra-cas/cas-generic.war /var/lib/tomcat8/webapps/cas.war
 RUN ln -s /usr/share/lib/georchestra-header/header-generic.war /var/lib/tomcat8/webapps/header-private.war
 
-#ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/security-proxy/target/ROOT-template.war /var/lib/tomcat8/webapps/ROOT.war
-#ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/cas-server-webapp/target/cas-template.war /var/lib/tomcat8/webapps/cas.war
-#ADD https://sdi.georchestra.org/ci/job/georchestra-template/lastSuccessfulBuild/artifact/header/target/header-template.war /var/lib/tomcat8/webapps/header-private.war
-#RUN chmod a+r /var/lib/tomcat8/webapps/*.war
-
-#RUN mkdir -p /var/lib/tomcat8/webapps/ROOT && \
-#    unzip -e /var/lib/tomcat8/webapps/ROOT.war -d /var/lib/tomcat8/webapps/ROOT && \
-#    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/ROOT
-
-#RUN mkdir -p /var/lib/tomcat8/webapps/cas && \
-#    unzip -e /var/lib/tomcat8/webapps/cas.war -d /var/lib/tomcat8/webapps/cas && \
-#    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/cas
-
-# replace the webapp's own proxy-servlet.xml & properties file in order to link with the database and other containers
-#COPY proxy-servlet.xml /var/lib/tomcat8/webapps/ROOT/WEB-INF/
-#COPY security-proxy.properties /var/lib/tomcat8/webapps/ROOT/WEB-INF/
-#COPY log4j.properties /var/lib/tomcat8/webapps/ROOT/WEB-INF/classes/
-# cas customization:
-#COPY cas.properties /var/lib/tomcat8/webapps/cas/WEB-INF/
+# unzip webapps to allow overrides via overlay
+RUN mkdir -p /var/lib/tomcat8/webapps/ROOT && \
+    unzip -e /var/lib/tomcat8/webapps/ROOT.war -d /var/lib/tomcat8/webapps/ROOT && \
+    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/ROOT
+RUN mkdir -p /var/lib/tomcat8/webapps/cas && \
+    unzip -e /var/lib/tomcat8/webapps/cas.war -d /var/lib/tomcat8/webapps/cas && \
+    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/cas
+RUN mkdir -p /var/lib/tomcat8/webapps/header-private && \
+    unzip -e /var/lib/tomcat8/webapps/header-private.war -d /var/lib/tomcat8/webapps/header-private && \
+    chown -R tomcat8:tomcat8 /var/lib/tomcat8/webapps/header-private
 
 # the keystore is for the server (cas)
 COPY keystore /etc/tomcat8/
@@ -65,15 +60,11 @@ ADD https://github.com/hiteshjasani/nim-mungehosts/releases/download/v0.1.1/mung
 RUN chmod 755 /usr/local/bin/mungehosts
 
 # configure connector on port 8443 for CAS ticket validation:
-#COPY server.xml /var/lib/tomcat8/conf/
 # Expose the port where tomcat is listening
 RUN sed -i 's/8080/8180/' /var/lib/tomcat8/conf/server.xml
-# Expose the port where tomcat is listening
-#RUN sed -i 's/8080/8180/' /var/lib/tomcat8/conf/server.xml
-# line above is useless since the port has already been customized in server.xml
 EXPOSE 8180
 
-VOLUME ["/tmp", "/etc/georchestra"] # server logs
+VOLUME ["/tmp"]
 
 # Start Tomcat server
 # The last line (the CMD command) is used to make a fake always-running

@@ -43,7 +43,6 @@ proxycas:
         #~ - geowebcache:geowebcache_host
     volumes:
         - ~/docker/tmp:/tmp
-        - ~/docker/datadir:/etc/georchestra
 
 mapfishapp:
     build: ./mapfishapp
@@ -54,17 +53,16 @@ mapfishapp:
         - database:postgresql_host
     volumes:
         - ~/docker/tmp:/tmp
-        - ~/docker/datadir:/etc/georchestra
 
-geoserver:
-    build: ./geoserver
-    privileged: true
-    ports:
-        - "8380"
-    volumes:
-        - ~/docker/tmp:/tmp
-        - ~/docker/data:/data
-        - ~/docker/datadir:/etc/georchestra
+#~ geoserver:
+    #~ build: ./geoserver
+    #~ privileged: true
+    #~ ports:
+        #~ - "8380"
+    #~ volumes:
+        #~ - ~/docker/tmp:/tmp
+        #~ - ~/docker/data:/data
+        #~ - ~/docker/datadir:/etc/georchestra
         
 #~ ldapadmin:
     #~ build: ./ldapadmin
