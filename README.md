@@ -1,4 +1,6 @@
-# docker
+# docker (deprecated)
+
+This is outdated & unmaintained material, please refer to [https://github.com/georchestra/georchestra#install](https://github.com/georchestra/georchestra#install)
 
 This repository contains the [docker](https://www.docker.com/) and [compose](https://docs.docker.com/compose/) configuration files required to build a basic [geOrchestra](http://www.georchestra.org) SDI instance.
 
